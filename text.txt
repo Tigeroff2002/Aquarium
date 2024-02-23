@@ -1,0 +1,85 @@
+                            i >= fish_coord.Item1 && i <= fish_coord.Item1 + 30
+                            && j >= fish_coord.Item2 & j <= fish_coord.Item2 + 40
+                            && !(i >= fish_coord.Item1 + 15 && i <= fish_coord.Item1 + 30
+                                && j >= fish_coord.Item2 & j <= fish_coord.Item2 + 15
+                                && i + j <= fish_coord.Item1 + fish_coord.Item2 + 30)
+                            && !(i >= fish_coord.Item1 && i <= fish_coord.Item1 + 15
+                                && j >= fish_coord.Item2 & j <= fish_coord.Item2 + 15
+                                && i + j <= fish_coord.Item1 - fish_coord.Item2)
+                            || i >= fish_coord.Item1 + 8 && i <= fish_coord.Item1 + 22
+                            && j >= fish_coord.Item2 + 40 && j <= fish_coord.Item2 + 70;
+
+
+            Glut.glutInit();
+            // инициализация режима экрана
+            Glut.glutInitDisplayMode(Glut.GLUT_RGB | Glut.GLUT_DOUBLE);
+
+            // установка цвета очистки экрана (RGBA)
+            Gl.glClearColor(255, 255, 255, 1);
+
+            // установка порта вывода
+            Gl.glViewport(0, 0, AnT.Width, AnT.Height);
+
+            // активация проекционной матрицы
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+            // очистка матрицы
+            Gl.glLoadIdentity();
+
+            // определение параметров настройки проекции, в зависимости от размеров сторон элемента AnT.
+            if ((float)AnT.Width <= (float)AnT.Height)
+            {
+
+                ScreenW = 500.0;
+                ScreenH = 500.0 * (float)AnT.Height / (float)AnT.Width;
+
+                Glu.gluOrtho2D(0.0, ScreenW, 0.0, ScreenH);
+
+            }
+            else
+            {
+
+                ScreenW = 500.0 * (float)AnT.Width / (float)AnT.Height;
+                ScreenH = 500.0;
+
+                Glu.gluOrtho2D(0.0, 500.0 * (float)AnT.Width / (float)AnT.Height, 0.0, 500.0);
+
+            }
+
+            // сохранение коэфицентов, которые нам необходимы для перевода
+            // координат указателя в оконной системе, в координаты,
+            // принятые в нашей OpenGL сцене
+            devX = (float)ScreenW / (float)AnT.Width;
+            devY = (float)ScreenH / (float)AnT.Height;
+
+            // установка объектно-видовой матрицы
+            Gl.glMatrixMode(Gl.GL_MODELVIEW);
+
+
+
+            // инициализация библиотеки GLUT 
+            Glut.glutInit();
+
+            // инициализация режима окна 
+            Glut.glutInitDisplayMode(Glut.GLUT_RGB | Glut.GLUT_DOUBLE | Glut.GLUT_DEPTH);
+
+            // устанавливаем цвет очистки окна 
+            Gl.glClearColor(0, 150, 220, 1);
+
+            // устанавливаем порт вывода, основываясь на размерах элемента управления AnT 
+            Gl.glViewport(0, 0, AnT.Width, AnT.Height);
+
+            // устанавливаем проекционную матрицу 
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+            // очищаем ее 
+            Gl.glLoadIdentity();
+
+            // очищаем массив пикселей
+            for (int ax = 0; ax < 800; ax++)
+            {
+                for (int bx = 0; bx < 600; bx++)
+                {
+                    PixelsArray[ax, bx, 0] = 0;
+                    PixelsArray[ax, bx, 1] = 0;
+                    PixelsArray[ax, bx, 2] = 0;
+                }
+            }
