@@ -35,8 +35,6 @@ namespace Aquarium
             Is2DModeEnabled = false;
             Is3DModeEnabled = false;
 
-            auqariumDrawer = new Aquarium();
-
             timerIteration = 0;
 
             BackgroundImage = Image.FromFile("..\\..\\texture\\background.jpg");
@@ -66,6 +64,9 @@ namespace Aquarium
         {
             Is2DModeEnabled = true;
             Is3DModeEnabled = false;
+            isFishEnabled = false;
+
+            aquariumDrawer = new Aquarium();
 
             BackgroundImage = Image.FromFile("..\\..\\texture\\aquarium.jpg");
 
@@ -77,6 +78,8 @@ namespace Aquarium
             BackgroundImage = Image.FromFile("..\\..\\texture\\vodorosli.jpg");
 
             isFractalEnabled = true;
+            Is2DModeEnabled = false;
+            Is3DModeEnabled = false;
 
             Init2DGlut();
 
@@ -143,6 +146,10 @@ namespace Aquarium
             th_6.Start(threadInputParams[5]);
             th_7.Start(threadInputParams[6]);
             th_8.Start(threadInputParams[7]);
+
+            Thread.Sleep(3000);
+
+            aquariumDrawer = new Aquarium(isFractalEnabled, PixelsArray);
         }
 
         private void Init2DGlut()
@@ -183,7 +190,10 @@ namespace Aquarium
             button3.Visible = !Is3DModeEnabled || Is2DModeEnabled;
 
             button2.Visible = !isFractalEnabled;
-            button4.Visible = isFractalEnabled;
+            button4.Visible = (isFractalEnabled && comboBox1.SelectedIndex != 1 
+                || Is2DModeEnabled) && !isFishEnabled;
+            button5.Visible = (isFractalEnabled && comboBox1.SelectedIndex != 1 
+                || Is2DModeEnabled) && isFishEnabled;
 
             comboBox1.Visible = isFractalEnabled;
             label8.Visible = isFractalEnabled;
@@ -207,18 +217,26 @@ namespace Aquarium
 
         private void DrawAquarium()
         {
-            if (Is2DModeEnabled || isFractalEnabled)
+            if (Is2DModeEnabled)
             {
-                auqariumDrawer.DrawAquarium(
-                    isFractalEnabled,
-                    PixelsArray,
+                aquariumDrawer.Draw2DAquarium(
+                    timerIteration,
+                    isFishEnabled,
+                    fish_coord);
+            }
+
+            else if (isFractalEnabled)
+            {
+                aquariumDrawer.Draw2DRasterScene(
                     isFishEnabled,
                     fish_coord,
-                    timerIteration);
+                    isFilteredNow,
+                    isFilteredWasDisabled);
             }
+
             else if (Is3DModeEnabled)
             {
-                auqariumDrawer.Draw3DFish();
+                aquariumDrawer.Draw3DFish();
             }
 
             // сигнал для обновление элемента, реализующего визуализацию 
@@ -230,29 +248,19 @@ namespace Aquarium
             // применить фильтр
             if (comboBox1.SelectedIndex == 1 && !isFilteredNow)
             {
-                AquarelizationFilter();
-
                 isFilteredNow = true;
+                isFilteredWasDisabled = false;
             }
 
             if (comboBox1.SelectedIndex == 0 && isFilteredNow)
             {
                 isFilteredNow = false;
-
-                for (int i = 0; i < 800; i++)
-                {
-                    for (int j = 0; j < 600; j++)
-                    {
-                        PixelsArray[i, j, 0] = PixelsArrayBeforeFilter[i, j, 0];
-                        PixelsArray[i, j, 1] = PixelsArrayBeforeFilter[i, j, 1];
-                        PixelsArray[i, j, 2] = PixelsArrayBeforeFilter[i, j, 2];
-                    }
-                }
-
+                isFilteredWasDisabled = true;
             }
         }
 
         private bool isFilteredNow;
+        private bool isFilteredWasDisabled;
         private bool isFishEnabled;
         private (int, int, int) fish_coord;
 
@@ -300,116 +308,6 @@ namespace Aquarium
         {
             fish_coord.Item3 = trackBar3.Value;
             label7.Text = fish_coord.Item3.ToString();
-        }
-
-        public void AquarelizationFilter()
-        {
-            // собираем матрицу
-            float[] mat = new float[9];
-            mat[0] = -0.1f;
-            mat[1] = -0.1f;
-            mat[2] = -0.1f;
-            mat[3] = -0.1f;
-            mat[4] = 1.8f;
-            mat[5] = -0.1f;
-            mat[6] = -0.1f;
-            mat[7] = -0.1f;
-            mat[8] = -0.1f;
-
-            for (int i = 0; i < 800; i++)
-            {
-                for (int j = 0; j < 600; j++)
-                {
-                    PixelsArrayBeforeFilter[i, j, 0] = PixelsArray[i, j, 0];
-                    PixelsArrayBeforeFilter[i, j, 1] = PixelsArray[i, j, 1];
-                    PixelsArrayBeforeFilter[i, j, 2] = PixelsArray[i, j, 2];
-                }
-            }
-
-            //вызываем функцию обработки, передавая туда матрицу и дополнительные параметры
-            PixelTransformation(mat, 0, 1, false);
-        }
-
-
-        // функция обработки слоя изображения на основе полученной матрицы и дополнительных параметров
-        // corr - коррекция составляющей цвета - после обработки каждого пикселя к каждой его составляющей будет
-        // прибавлено данное значение
-        // COEFF - коэфицент, реализующий усиление работы фильтра
-        // need_count_correction - необходимость корректировки значения полученного пикселя после прохода фильтра
-        // если данный параметра установлен, то каждая составляющая цвета, перед тем как быть преведенной к виду 0-255
-        // будет разделена на количество произошедших с ней преобразований
-        // это необходимо для корректной работы некоторых фильтров
-        public void PixelTransformation(float[] mat, int corr, float COEFF, bool need_count_correction)
-        {
-            // массив для получения результирующего пикселя
-            float[] resault_RGB = new float[3];
-            int count = 0;
-            // проходим циклом по всем пикселям слоя
-            for (int Y = 0; Y < AnT.Height; Y++)
-            {
-                for (int X = 0; X < AnT.Width; X++)
-                {
-                    // цикл по всем составляющим (0-2, т.е. R G B)
-                    for (int c = 0, ax = 0, bx = 0; c < 3; c++)
-                    {
-                        // обнуление составляющей результата
-                        resault_RGB[c] = 0;
-                        // обнуление счетчика обработок
-                        count = 0;
-
-                        // два цикла для захвата области 3х3 вокруг обрабатываемого пикселя
-                        for (bx = -1; bx < 2; bx++)
-                        {
-                            for (ax = -1; ax < 2; ax++)
-                            {
-                                // если мы не попали в рамки, просто используем центральный пиксель, и продолжаем цикл
-                                if (X + ax < 0 || X + ax > AnT.Width - 1 || Y + bx < 0 || Y + bx > AnT.Height - 1)
-                                {
-                                    // считаем составляющую в одной из точек, используем коэфицент в матрице (под номером текущей итерации), коэфицент усиления (COEFF) и прибовляем коррекцию (corr)
-                                    resault_RGB[c] += (float)(PixelsArray[X, Y, c]) * mat[count] * COEFF + corr;
-                                    // счетчик обработок = ячейке матрицы с необходимым коэфицентом
-                                    count++;
-                                    // продолжаем цикл
-                                    continue;
-                                }
-
-                                // иначе, если мы укладываемся в изображение (не пересекаем границы), используем соседние пиксели, корректируем ячейку массива параметрами ax, bx
-                                resault_RGB[c] += (float)(PixelsArray[X + ax, Y + bx, c]) * mat[count] * COEFF + corr;
-                                // счетчик обработок = ячейке матрицы с необходимым коэфицентом
-                                count++;
-                            }
-                        }
-
-                    }
-
-                    // теперь для всех составляющих корректируем цвет
-                    for (int c = 0; c < 3; c++)
-                    {
-                        // если требуется разделить результат до приведения к 0-255, разделив на количество проведенных операций
-                        if (count != 0 && need_count_correction)
-                        {
-                            // выполняем данное деление
-                            resault_RGB[c] /= count;
-                        }
-
-                        // если значение меньше нуля
-                        if (resault_RGB[c] < 0)
-                        {
-                            // - приравниваем к нулю
-                            resault_RGB[c] = 0;
-                        }
-
-                        // если больше 255
-                        if (resault_RGB[c] > 255)
-                        {
-                            // приравниваем к 255
-                            resault_RGB[c] = 255;
-                        }
-                        // записываем в массив цветов слоя новое значение
-                        PixelsArray[X, Y, c] = (byte)resault_RGB[c];
-                    }
-                }
-            }
         }
 
         // функция отрисовки
@@ -539,7 +437,7 @@ namespace Aquarium
         Thread th_7 = null;
         Thread th_8 = null;
 
-        private Aquarium auqariumDrawer;
+        private Aquarium aquariumDrawer = null;
 
         private Random rnd = new Random();
 
