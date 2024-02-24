@@ -473,8 +473,6 @@ namespace Aquarium
         // массив пикселей
         static private byte[,,] PixelsArray = new byte[800, 600, 3];
 
-        // массив до фильтрации
-        static private byte[,,] PixelsArrayBeforeFilter = new byte[800, 600, 3];
 
         // объявляем объекты для управления потоками
         Thread th_1 = null;

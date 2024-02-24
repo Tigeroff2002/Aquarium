@@ -75,9 +75,9 @@ namespace Aquarium
 
             if (isFractalEnabled)
             {
-                for (int i = 1; i < 600; i++)
+                for (int i = 0; i < 600; i++)
                 {
-                    for (int j = 1; j < 600; j++)
+                    for (int j = 0; j < 600; j++)
                     {
                         if (isFractalEnabled)
                         {
@@ -113,7 +113,7 @@ namespace Aquarium
             bool isFishEnabled,
             (int, int, int) fish_coord,
             bool isFilterEnabled = false,
-            bool isFilteredDisabled = false)
+            bool isFilteredJustDisabled = false)
         {
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 
@@ -183,33 +183,39 @@ namespace Aquarium
 
             if (isFilterEnabled)
             {
+                filterDisableIteration = 0;
                 Filter(isFishEnabled);
             }
 
-            else if (isFilteredDisabled)
+            else if (isFilteredJustDisabled)
             {
-                for (int i = 0; i < 800; i++)
+                if (filterDisableIteration == 0)
                 {
-                    for (int j = 0; j < 600; j++)
+                    for (int i = 0; i < 800; i++)
                     {
-                        local_fractal_array[i, j, 0] 
-                            = local_fractal_array_before_filter[i, j, 0];
-                        local_fractal_array[i, j, 1] 
-                            = local_fractal_array_before_filter[i, j, 1];
-                        local_fractal_array[i, j, 2] 
-                            = local_fractal_array_before_filter[i, j, 2];
-
-                        if (isFishEnabled)
+                        for (int j = 0; j < 600; j++)
                         {
-                            local_array_with_fish[i, j, 0] 
-                                = local_array_with_fish_before_filter[i, j, 0];
-                            local_array_with_fish[i, j, 1] 
-                                = local_array_with_fish_before_filter[i, j, 1];
-                            local_array_with_fish[i, j, 2] 
-                                = local_array_with_fish_before_filter[i, j, 2];
+                            local_fractal_array[i, j, 0]
+                                = local_fractal_array_before_filter[i, j, 0];
+                            local_fractal_array[i, j, 1]
+                                = local_fractal_array_before_filter[i, j, 1];
+                            local_fractal_array[i, j, 2]
+                                = local_fractal_array_before_filter[i, j, 2];
+
+                            if (isFishEnabled)
+                            {
+                                local_array_with_fish[i, j, 0]
+                                    = local_array_with_fish_before_filter[i, j, 0];
+                                local_array_with_fish[i, j, 1]
+                                    = local_array_with_fish_before_filter[i, j, 1];
+                                local_array_with_fish[i, j, 2]
+                                    = local_array_with_fish_before_filter[i, j, 2];
+                            }
                         }
                     }
                 }
+
+                filterDisableIteration++;
             }
 
             Gl.glRasterPos2i(-1, -1);
@@ -339,28 +345,33 @@ namespace Aquarium
             mat[7] = -0.1f;
             mat[8] = -0.1f;
 
-            for (int i = 0; i < 800; i++)
+            if (filterIteration == 0)
             {
-                for (int j = 0; j < 600; j++)
+                for (int i = 0; i < 800; i++)
                 {
-                    local_fractal_array_before_filter[i, j, 0] 
-                        = local_fractal_array[i, j, 0];
-                    local_fractal_array_before_filter[i, j, 1] 
-                        = local_fractal_array[i, j, 1];
-                    local_fractal_array_before_filter[i, j, 2] 
-                        = local_fractal_array[i, j, 2];
-
-                    if (isFishEnabled)
+                    for (int j = 0; j < 600; j++)
                     {
-                        local_array_with_fish_before_filter[i, j, 0] 
-                            = local_array_with_fish[i, j, 0];
-                        local_array_with_fish_before_filter[i, j, 1] 
-                            = local_array_with_fish[i, j, 1];
-                        local_array_with_fish_before_filter[i, j, 2] 
-                            = local_array_with_fish[i, j, 2];
+                        local_fractal_array_before_filter[i, j, 0]
+                            = local_fractal_array[i, j, 0];
+                        local_fractal_array_before_filter[i, j, 1]
+                            = local_fractal_array[i, j, 1];
+                        local_fractal_array_before_filter[i, j, 2]
+                            = local_fractal_array[i, j, 2];
+
+                        if (isFishEnabled)
+                        {
+                            local_array_with_fish_before_filter[i, j, 0]
+                                = local_array_with_fish[i, j, 0];
+                            local_array_with_fish_before_filter[i, j, 1]
+                                = local_array_with_fish[i, j, 1];
+                            local_array_with_fish_before_filter[i, j, 2]
+                                = local_array_with_fish[i, j, 2];
+                        }
                     }
                 }
             }
+
+            filterIteration++;
 
             // вызываем функцию обработки, передавая туда матрицу и дополнительные параметры
             PixelTransformation(mat, 0, 1, false, local_fractal_array);
@@ -504,5 +515,8 @@ namespace Aquarium
         private bool[,] local_fish_bool_array = new bool[800, 600];
         private int[,] fish_matrix = new int[20, 2];
         private int[,] user_fish_matrix = new int[18, 2];
+
+        private int filterIteration;
+        private int filterDisableIteration;
     }
 }
