@@ -396,3 +396,12 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/.vs/Aquarium/v17/.suo
+/bin/Debug/Aquarium.exe
+/bin/Debug/Aquarium.pdb
+/obj/Debug/Aquarium.csproj.FileListAbsolute.txt
+/obj/Debug/Aquarium.csproj.GenerateResource.cache
+/obj/Debug/Aquarium.exe
+/obj/Debug/Aquarium.pdb
+/obj/Debug/DesignTimeResolveAssemblyReferences.cache
+/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
