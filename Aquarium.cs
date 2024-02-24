@@ -119,7 +119,7 @@ namespace Aquarium
                         }
                         else
                         {
-                            if (PixelsArray[i, j, 0] > 50)
+                            if (PixelsArray[i, j, 2] == 0)
                             {
                                 PixelsArray[i, j, 0] = 0;
                                 PixelsArray[i, j, 1] = 150;
