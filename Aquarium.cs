@@ -7,6 +7,7 @@ namespace Aquarium
 {
     public sealed class Aquarium
     {
+        #region constructor inits fractal matrix and fish pattern
         public Aquarium(
             bool isFractalEnabled = default,
             byte[,,] local_fractal_array = default)
@@ -104,7 +105,10 @@ namespace Aquarium
                 }
             }
         }
+        #endregion
 
+        // рисование растровой проработанной сцены с фракталами и подобием рыб
+        // с доступным фильтром для увеличения резкости
         public void Draw2DRasterScene(
             bool isFishEnabled,
             (int, int, int) fish_coord,
@@ -224,6 +228,7 @@ namespace Aquarium
             Gl.glFlush();
         }
 
+        // рисование 2D аквариума в векторном упрощенном виде
         public void Draw2DAquarium(
             int timerIteration,
             bool isFishEnabled,
@@ -319,6 +324,7 @@ namespace Aquarium
             Gl.glFlush();
         }
 
+        #region filtering functions
         private void Filter(bool isFishEnabled)
         {
             // собираем матрицу
@@ -442,7 +448,9 @@ namespace Aquarium
                 }
             }
         }
+        #endregion
 
+        #region 3D Fish not used methods
         public void Draw3DFish()
         {
             // очистка буфера цвета и буфера глубины
@@ -464,6 +472,7 @@ namespace Aquarium
             // завершаем рисование
             Gl.glFlush();
         }
+        #endregion
 
         // метод для умножения матриц
         private static float[,] MatrixMultiplication(int[,] matrixA, float[,] matrixB)

@@ -16,8 +16,6 @@ namespace Aquarium
             AnT.InitializeContexts();
         }
 
-        private int timerIteration;
-
         private void Form1_Load(object sender, EventArgs e)
         {
             comboBox1.Enabled = true;
@@ -42,24 +40,7 @@ namespace Aquarium
             RenderTimer1.Start();
         }
 
-        private void Change_Visibility_Fish_Controls(bool value)
-        {
-            label1.Visible = value;
-            label2.Visible = false;
-            label3.Visible = value;
-            label4.Visible = value;
-            label5.Visible = false;
-            label6.Visible = value;
-            label7.Visible = value;
-
-            trackBar1.Visible = false;
-            trackBar2.Visible = value;
-            trackBar3.Visible = value;
-
-            button4.Visible = !value;
-            button5.Visible = value;
-        }
-
+        #region buttons clicks
         private void button1_Click(object sender, EventArgs e)
         {
             Is2DModeEnabled = true;
@@ -152,6 +133,75 @@ namespace Aquarium
             aquariumDrawer = new Aquarium(isFractalEnabled, PixelsArray);
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            /*
+            Is3DModeEnabled = true;
+
+            // инициализация бибилиотеки glut
+            Glut.glutInit();
+
+            // инициализация режима экрана
+            Glut.glutInitDisplayMode(Glut.GLUT_RGB | Glut.GLUT_DOUBLE | Glut.GLUT_DEPTH);
+
+            // установка цвета очистки экрана (RGBA)
+            Gl.glClearColor(0, 150, 220, 1);
+
+            // установка порта вывода
+            Gl.glViewport(0, 0, AnT.Width, AnT.Height);
+
+            // активация проекционной матрицы
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+
+            // очистка матрицы
+            Gl.glLoadIdentity();
+
+            // установка перспективы
+            Glu.gluPerspective(155, (float)AnT.Width / (float)AnT.Height, 0.1, 200);
+
+            Gl.glMatrixMode(Gl.GL_MODELVIEW);
+            Gl.glLoadIdentity();
+
+            // начальная настройка параметров openGL (тест глубины, освещение и первый источник света)
+            Gl.glEnable(Gl.GL_DEPTH_TEST);
+            Gl.glEnable(Gl.GL_LIGHTING);
+            Gl.glEnable(Gl.GL_LIGHT0);
+            */
+
+            Form2 form2 = new Form2();
+            form2.Show();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Change_Visibility_Fish_Controls(true);
+
+            isFishEnabled = true;
+
+            fish_coord = (rnd.Next(0, 100), rnd.Next(100, 400), 0);
+
+            trackBar1.Value = fish_coord.Item1;
+            trackBar2.Value = fish_coord.Item2;
+            trackBar3.Value = fish_coord.Item3;
+
+            label5.Text = fish_coord.Item1.ToString();
+            label6.Text = fish_coord.Item2.ToString();
+            label7.Text = Angle_fish.ToString();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Change_Visibility_Fish_Controls(false);
+
+            isFishEnabled = false;
+
+            label5.Text = string.Empty;
+            label6.Text = string.Empty;
+            label7.Text = string.Empty;
+        }
+        #endregion
+
+        #region init 2D glut matrix
         private void Init2DGlut()
         {
             // инициализация режима экрана
@@ -183,7 +233,9 @@ namespace Aquarium
             // установка объектно-видовой матрицы
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
         }
+        #endregion
 
+        #region redrawing by timer
         private void RenderTimer1_Tick(object sender, EventArgs e)
         {
             button1.Visible = !Is2DModeEnabled || Is3DModeEnabled;
@@ -242,7 +294,9 @@ namespace Aquarium
             // сигнал для обновление элемента, реализующего визуализацию 
             AnT.Invalidate();
         }
+        #endregion
 
+        #region comboboxes controls
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             // применить фильтр
@@ -258,40 +312,9 @@ namespace Aquarium
                 isFilteredWasDisabled = true;
             }
         }
+        #endregion
 
-        private bool isFilteredNow;
-        private bool isFilteredWasDisabled;
-        private bool isFishEnabled;
-        private (int, int, int) fish_coord;
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            Change_Visibility_Fish_Controls(true);
-
-            isFishEnabled = true;
-
-            fish_coord = (rnd.Next(0, 100), rnd.Next(100, 400), 0);
-
-            trackBar1.Value = fish_coord.Item1;
-            trackBar2.Value = fish_coord.Item2;
-            trackBar3.Value = fish_coord.Item3;
-
-            label5.Text = fish_coord.Item1.ToString();
-            label6.Text = fish_coord.Item2.ToString();
-            label7.Text = Angle_fish.ToString();
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            Change_Visibility_Fish_Controls(false);
-
-            isFishEnabled = false;
-
-            label5.Text = string.Empty;
-            label6.Text = string.Empty;
-            label7.Text = string.Empty;
-        }
-
+        #region track bars scrolls
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             fish_coord.Item1 = trackBar1.Value;
@@ -309,7 +332,9 @@ namespace Aquarium
             fish_coord.Item3 = trackBar3.Value;
             label7.Text = fish_coord.Item3.ToString();
         }
+        #endregion
 
+        #region fractal drawing
         // функция отрисовки
         private void DrawFractal()
         {
@@ -414,6 +439,30 @@ namespace Aquarium
             else
                 return CalculateFractalValueInPower(currentPower + 1, targetPower, x, y, Cx, Cy);
         }
+        #endregion
+
+        private void Change_Visibility_Fish_Controls(bool value)
+        {
+            label1.Visible = value;
+            label2.Visible = false;
+            label3.Visible = value;
+            label4.Visible = value;
+            label5.Visible = false;
+            label6.Visible = value;
+            label7.Visible = value;
+
+            trackBar1.Visible = false;
+            trackBar2.Visible = value;
+            trackBar3.Visible = value;
+
+            button4.Visible = !value;
+            button5.Visible = value;
+        }
+
+        private bool isFilteredNow;
+        private bool isFilteredWasDisabled;
+        private bool isFishEnabled;
+        private (int, int, int) fish_coord;
 
         // объекты, содержащие настройки для потоков
         ParamsForThread[] threadInputParams = new ParamsForThread[8];
@@ -439,6 +488,8 @@ namespace Aquarium
 
         private Aquarium aquariumDrawer = null;
 
+        private int timerIteration;
+
         private Random rnd = new Random();
 
         private float Angle_fish;
@@ -447,44 +498,5 @@ namespace Aquarium
         private bool Is3DModeEnabled;
 
         private bool isFractalEnabled;
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            /*
-            Is3DModeEnabled = true;
-
-            // инициализация бибилиотеки glut
-            Glut.glutInit();
-
-            // инициализация режима экрана
-            Glut.glutInitDisplayMode(Glut.GLUT_RGB | Glut.GLUT_DOUBLE | Glut.GLUT_DEPTH);
-
-            // установка цвета очистки экрана (RGBA)
-            Gl.glClearColor(0, 150, 220, 1);
-
-            // установка порта вывода
-            Gl.glViewport(0, 0, AnT.Width, AnT.Height);
-
-            // активация проекционной матрицы
-            Gl.glMatrixMode(Gl.GL_PROJECTION);
-
-            // очистка матрицы
-            Gl.glLoadIdentity();
-
-            // установка перспективы
-            Glu.gluPerspective(155, (float)AnT.Width / (float)AnT.Height, 0.1, 200);
-
-            Gl.glMatrixMode(Gl.GL_MODELVIEW);
-            Gl.glLoadIdentity();
-
-            // начальная настройка параметров openGL (тест глубины, освещение и первый источник света)
-            Gl.glEnable(Gl.GL_DEPTH_TEST);
-            Gl.glEnable(Gl.GL_LIGHTING);
-            Gl.glEnable(Gl.GL_LIGHT0);
-            */
-
-            Form2 form2 = new Form2();
-            form2.Show();
-        }
     }
 }
