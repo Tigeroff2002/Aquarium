@@ -69,11 +69,89 @@ namespace Aquarium
 
             BackgroundImage = Image.FromFile("..\\..\\texture\\aquarium.jpg");
 
+            Init2DGlut();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            BackgroundImage = Image.FromFile("..\\..\\texture\\vodorosli.jpg");
+
+            isFractalEnabled = true;
+
+            Init2DGlut();
+
+            // устанавливаем проекционную матрицу 
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+
+            // очищаем ее 
+            Gl.glLoadIdentity();
+
+            // делим строки обрабатываемого изображения между потоками
+            threadInputParams[0] = new ParamsForThread(0, 75, 800);
+            threadInputParams[1] = new ParamsForThread(75, 150, 800);
+            threadInputParams[2] = new ParamsForThread(150, 225, 800);
+            threadInputParams[3] = new ParamsForThread(225, 300, 800);
+            threadInputParams[4] = new ParamsForThread(300, 375, 800);
+            threadInputParams[5] = new ParamsForThread(375, 450, 800);
+            threadInputParams[6] = new ParamsForThread(450, 525, 800);
+            threadInputParams[7] = new ParamsForThread(525, 600, 800);
+
+
+            threadInputParams[0]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
+            threadInputParams[1]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
+            threadInputParams[2]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
+            threadInputParams[3]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
+            threadInputParams[4]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
+            threadInputParams[5]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
+            threadInputParams[6]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
+            threadInputParams[7]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
+
+            threadInputParams[0].code_mode = comboBox1.SelectedIndex;
+            threadInputParams[1].code_mode = comboBox1.SelectedIndex;
+            threadInputParams[2].code_mode = comboBox1.SelectedIndex;
+            threadInputParams[3].code_mode = comboBox1.SelectedIndex;
+            threadInputParams[4].code_mode = comboBox1.SelectedIndex;
+            threadInputParams[5].code_mode = comboBox1.SelectedIndex;
+            threadInputParams[6].code_mode = comboBox1.SelectedIndex;
+            threadInputParams[7].code_mode = comboBox1.SelectedIndex;
+
+            /*создаем 8 потоков, в качестве параметров передаем имя Выполняемой функции*/
+            th_1 = new Thread(CalculateImage);
+            th_2 = new Thread(CalculateImage);
+            th_3 = new Thread(CalculateImage);
+            th_4 = new Thread(CalculateImage);
+            th_5 = new Thread(CalculateImage);
+            th_6 = new Thread(CalculateImage);
+            th_7 = new Thread(CalculateImage);
+            th_8 = new Thread(CalculateImage);
+
+            //расставляем приоритеты для потоков ниже среднего
+            th_1.Priority = ThreadPriority.Lowest;
+            th_2.Priority = ThreadPriority.Lowest;
+            th_3.Priority = ThreadPriority.Lowest;
+            th_4.Priority = ThreadPriority.Lowest;
+            th_5.Priority = ThreadPriority.Lowest;
+            th_6.Priority = ThreadPriority.Lowest;
+            th_7.Priority = ThreadPriority.Lowest;
+            th_8.Priority = ThreadPriority.Lowest;
+
+            th_1.Start(threadInputParams[0]);
+            th_2.Start(threadInputParams[1]);
+            th_3.Start(threadInputParams[2]);
+            th_4.Start(threadInputParams[3]);
+            th_5.Start(threadInputParams[4]);
+            th_6.Start(threadInputParams[5]);
+            th_7.Start(threadInputParams[6]);
+            th_8.Start(threadInputParams[7]);
+        }
+
+        private void Init2DGlut()
+        {
             // инициализация режима экрана
             Glut.glutInitDisplayMode(Glut.GLUT_RGB | Glut.GLUT_DOUBLE);
 
             // установка цвета очистки экрана (RGBA)
-            Gl.glClearColor(255, 255, 255, 1);
+            Gl.glClearColor(0, 150, 220, 1);
 
             // установка порта вывода
             Gl.glViewport(0, 0, AnT.Width, AnT.Height);
@@ -105,18 +183,18 @@ namespace Aquarium
             button3.Visible = !Is3DModeEnabled || Is2DModeEnabled;
 
             button2.Visible = !isFractalEnabled;
-            button4.Visible = Is2DModeEnabled && !Is3DModeEnabled;
+            button4.Visible = isFractalEnabled;
 
-            comboBox1.Visible = Is2DModeEnabled && !Is3DModeEnabled;
-            label8.Visible = Is2DModeEnabled && !Is3DModeEnabled;
+            comboBox1.Visible = isFractalEnabled;
+            label8.Visible = isFractalEnabled;
 
             label9.Text = Is2DModeEnabled
-                ? !isFractalEnabled
-                    ? "Используется режим простой 2D визуализации"
-                    : "Используется режим визуализации растровой сцены с фильтрами"
-                : Is3DModeEnabled
-                    ? "Используется режим 3D визуализации"
-                    : "Визуализация не ведется";
+                ? "Используется режим простой 2D визуализации"
+                : isFractalEnabled
+                    ? "Используется режим визуализации растровой сцены с фильтрами"
+                    : Is3DModeEnabled
+                        ? "Используется режим 3D визуализации"
+                        : "Визуализация не ведется";
 
             label2.Visible = isFractalEnabled && isFishEnabled;
             label5.Visible = isFractalEnabled && isFishEnabled;
@@ -129,7 +207,7 @@ namespace Aquarium
 
         private void DrawAquarium()
         {
-            if (Is2DModeEnabled)
+            if (Is2DModeEnabled || isFractalEnabled)
             {
                 auqariumDrawer.DrawAquarium(
                     isFractalEnabled,
@@ -509,76 +587,6 @@ namespace Aquarium
 
             Form2 form2 = new Form2();
             form2.Show();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            BackgroundImage = Image.FromFile("..\\..\\texture\\vodorosli.jpg");
-
-            isFractalEnabled = true;
-
-            // устанавливаем проекционную матрицу 
-            Gl.glMatrixMode(Gl.GL_PROJECTION);
-            // очищаем ее 
-            Gl.glLoadIdentity();
-
-            // делим строки обрабатываемого изображения между потоками
-            threadInputParams[0] = new ParamsForThread(0, 75, 800);
-            threadInputParams[1] = new ParamsForThread(75, 150, 800);
-            threadInputParams[2] = new ParamsForThread(150, 225, 800);
-            threadInputParams[3] = new ParamsForThread(225, 300, 800);
-            threadInputParams[4] = new ParamsForThread(300, 375, 800);
-            threadInputParams[5] = new ParamsForThread(375, 450, 800);
-            threadInputParams[6] = new ParamsForThread(450, 525, 800);
-            threadInputParams[7] = new ParamsForThread(525, 600, 800);
-
-
-            threadInputParams[0]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
-            threadInputParams[1]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
-            threadInputParams[2]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
-            threadInputParams[3]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
-            threadInputParams[4]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
-            threadInputParams[5]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
-            threadInputParams[6]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
-            threadInputParams[7]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
-
-            threadInputParams[0].code_mode = comboBox1.SelectedIndex;
-            threadInputParams[1].code_mode = comboBox1.SelectedIndex;
-            threadInputParams[2].code_mode = comboBox1.SelectedIndex;
-            threadInputParams[3].code_mode = comboBox1.SelectedIndex;
-            threadInputParams[4].code_mode = comboBox1.SelectedIndex;
-            threadInputParams[5].code_mode = comboBox1.SelectedIndex;
-            threadInputParams[6].code_mode = comboBox1.SelectedIndex;
-            threadInputParams[7].code_mode = comboBox1.SelectedIndex;
-
-            /*создаем 8 потоков, в качестве параметров передаем имя Выполняемой функции*/
-            th_1 = new Thread(CalculateImage);
-            th_2 = new Thread(CalculateImage);
-            th_3 = new Thread(CalculateImage);
-            th_4 = new Thread(CalculateImage);
-            th_5 = new Thread(CalculateImage);
-            th_6 = new Thread(CalculateImage);
-            th_7 = new Thread(CalculateImage);
-            th_8 = new Thread(CalculateImage);
-
-            //расставляем приоритеты для потоков ниже среднего
-            th_1.Priority = ThreadPriority.Lowest;
-            th_2.Priority = ThreadPriority.Lowest;
-            th_3.Priority = ThreadPriority.Lowest;
-            th_4.Priority = ThreadPriority.Lowest;
-            th_5.Priority = ThreadPriority.Lowest;
-            th_6.Priority = ThreadPriority.Lowest;
-            th_7.Priority = ThreadPriority.Lowest;
-            th_8.Priority = ThreadPriority.Lowest;
-
-            th_1.Start(threadInputParams[0]);
-            th_2.Start(threadInputParams[1]);
-            th_3.Start(threadInputParams[2]);
-            th_4.Start(threadInputParams[3]);
-            th_5.Start(threadInputParams[4]);
-            th_6.Start(threadInputParams[5]);
-            th_7.Start(threadInputParams[6]);
-            th_8.Start(threadInputParams[7]);
         }
     }
 }
