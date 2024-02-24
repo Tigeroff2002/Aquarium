@@ -60,8 +60,6 @@ namespace Aquarium
 
             button4.Visible = !value;
             button5.Visible = value;
-
-            button6.Visible = value;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -106,9 +104,8 @@ namespace Aquarium
             button1.Visible = !Is2DModeEnabled || Is3DModeEnabled;
             button3.Visible = !Is3DModeEnabled || Is2DModeEnabled;
 
-            button2.Visible = Is2DModeEnabled && !Is3DModeEnabled && !isFractalEnabled;
+            button2.Visible = !isFractalEnabled;
             button4.Visible = Is2DModeEnabled && !Is3DModeEnabled;
-            button6.Visible = Is2DModeEnabled && !Is3DModeEnabled && isFractalEnabled;
 
             comboBox1.Visible = Is2DModeEnabled && !Is3DModeEnabled;
             label8.Visible = Is2DModeEnabled && !Is3DModeEnabled;
@@ -582,13 +579,6 @@ namespace Aquarium
             th_6.Start(threadInputParams[5]);
             th_7.Start(threadInputParams[6]);
             th_8.Start(threadInputParams[7]);
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            isFractalEnabled = false;
-
-            BackgroundImage = Image.FromFile("..\\..\\texture\\aquarium.jpg");
         }
     }
 }

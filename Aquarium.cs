@@ -125,15 +125,6 @@ namespace Aquarium
                                 PixelsArray[i, j, 1] = 150;
                                 PixelsArray[i, j, 2] = 220;
                             }
-
-                            if (PixelsArray[i, j, 0] > 235 &&
-                                PixelsArray[i, j, 1] == 251 &&
-                                PixelsArray[i, j, 2] > 254)
-                            {
-                                PixelsArray[i, j, 0] = 0;
-                                PixelsArray[i, j, 1] = 255;
-                                PixelsArray[i, j, 2] = 0;
-                            }
                         }
 
                         var isNeedToDraw =
@@ -156,96 +147,97 @@ namespace Aquarium
                         }
                     }
                 }
-
-                if (isFractalEnabled)
-                {
-                    Gl.glRasterPos2i(-1, -1);
-
-                    // визуализируем массив
-                    Gl.glDrawPixels(600, 600, Gl.GL_RGB, Gl.GL_UNSIGNED_BYTE, PixelsArray);
-                }
             }
 
-            var hi = timerIteration * 10;
-
-            Gl.glColor3f(255, 0, 0);
-            Gl.glLineWidth(10);
-
-            // Левая часть внешнего контура
-            Gl.glBegin(Gl.GL_LINE_STRIP);
-
-            for (int k = 0; k < 18; k++)
+            if (isFractalEnabled)
             {
-                Gl.glVertex2d(
-                    fish_matrix[k, 1] + hi % 540,
-                    fish_matrix[k, 0] + 200);
+                Gl.glRasterPos2i(-1, -1);
+
+                // визуализируем массив
+                Gl.glDrawPixels(600, 600, Gl.GL_RGB, Gl.GL_UNSIGNED_BYTE, PixelsArray);
             }
-
-            Gl.glEnd();
-
-            Gl.glColor3f(150, 0, 120);
-
-            // Левая часть внешнего контура
-            Gl.glBegin(Gl.GL_LINE_STRIP);
-
-            for (int k = 0; k < 18; k++)
+            else
             {
-                Gl.glVertex2d(
-                    fish_matrix[k, 1] + hi % 540,
-                    fish_matrix[k, 0] + 300);
-            }
+                var hi = timerIteration * 10;
 
-            Gl.glEnd();
-
-
-            Gl.glColor3f(20, 80, 30);
-
-            // Левая часть внешнего контура
-            Gl.glBegin(Gl.GL_LINE_STRIP);
-
-            for (int k = 0; k < 18; k++)
-            {
-                Gl.glVertex2d(
-                    fish_matrix[k, 1] + hi % 540,
-                    fish_matrix[k, 0] + 400);
-            }
-
-            Gl.glEnd();
-
-            if (isFishEnabled)
-            {
-                Gl.glColor3f(0, 0, 0);
-
-                Gl.glLineWidth(1);
+                Gl.glColor3f(255, 0, 0);
+                Gl.glLineWidth(10);
 
                 // Левая часть внешнего контура
                 Gl.glBegin(Gl.GL_LINE_STRIP);
 
                 for (int k = 0; k < 18; k++)
                 {
-                    user_fish_matrix[k, 0] = fish_matrix[k, 0] + fish_coord.Item1;
-                    user_fish_matrix[k, 1] = fish_matrix[k, 1] + fish_coord.Item2;
-
-                    var nRad = (fish_coord.Item3 * Math.PI) / 180;
-
-                    var sin = (float)Math.Sin(nRad);
-                    var cos = (float)Math.Cos(nRad);
-
-                    var rotateMatrix = new float[2, 2];
-
-                    rotateMatrix[0, 0] = cos;
-                    rotateMatrix[0, 1] = -sin;
-                    rotateMatrix[1, 0] = sin;
-                    rotateMatrix[1, 1] = cos;
-
-                    var newMatrix = MatrixMultiplication(user_fish_matrix, rotateMatrix);
-
                     Gl.glVertex2d(
-                        newMatrix[k, 1] % 650,
-                        newMatrix[k, 0] % 500);
+                        fish_matrix[k, 1] + hi % 540,
+                        fish_matrix[k, 0] + 200);
                 }
 
                 Gl.glEnd();
+
+                Gl.glColor3f(150, 0, 120);
+
+                // Левая часть внешнего контура
+                Gl.glBegin(Gl.GL_LINE_STRIP);
+
+                for (int k = 0; k < 18; k++)
+                {
+                    Gl.glVertex2d(
+                        fish_matrix[k, 1] + hi % 540,
+                        fish_matrix[k, 0] + 300);
+                }
+
+                Gl.glEnd();
+
+                Gl.glColor3f(20, 80, 30);
+
+                // Левая часть внешнего контура
+                Gl.glBegin(Gl.GL_LINE_STRIP);
+
+                for (int k = 0; k < 18; k++)
+                {
+                    Gl.glVertex2d(
+                        fish_matrix[k, 1] + hi % 540,
+                        fish_matrix[k, 0] + 400);
+                }
+
+                Gl.glEnd();
+
+                if (isFishEnabled)
+                {
+                    Gl.glColor3f(0, 0, 0);
+
+                    Gl.glLineWidth(10);
+
+                    // Левая часть внешнего контура
+                    Gl.glBegin(Gl.GL_LINE_STRIP);
+
+                    for (int k = 0; k < 18; k++)
+                    {
+                        user_fish_matrix[k, 0] = fish_matrix[k, 0] + fish_coord.Item1;
+                        user_fish_matrix[k, 1] = fish_matrix[k, 1] + fish_coord.Item2;
+
+                        var nRad = (fish_coord.Item3 * Math.PI) / 180;
+
+                        var sin = (float)Math.Sin(nRad);
+                        var cos = (float)Math.Cos(nRad);
+
+                        var rotateMatrix = new float[2, 2];
+
+                        rotateMatrix[0, 0] = cos;
+                        rotateMatrix[0, 1] = -sin;
+                        rotateMatrix[1, 0] = sin;
+                        rotateMatrix[1, 1] = cos;
+
+                        var newMatrix = MatrixMultiplication(user_fish_matrix, rotateMatrix);
+
+                        Gl.glVertex2d(
+                            newMatrix[k, 1] % 650,
+                            newMatrix[k, 0] % 500);
+                    }
+
+                    Gl.glEnd();
+                }
             }
 
             Gl.glFlush();
