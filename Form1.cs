@@ -290,12 +290,26 @@ namespace Aquarium
                     }
                 }
 
-                aquariumDrawer.Draw2DRasterScene(
-                    isFishEnabled,
-                    fish_coord,
-                    system_fish_coord,
-                    isFilteredNow,
-                    isFilteredWasDisabled);
+                try
+                {
+                    aquariumDrawer.Draw2DRasterScene(
+                        isFishEnabled,
+                        fish_coord,
+                        system_fish_coord,
+                        isFilteredNow,
+                        isFilteredWasDisabled);
+                }
+                catch (ArgumentException)
+                {
+                    RenderTimer1.Stop();
+
+                    MessageBox.Show("Произошла коллизия рыбок!");
+
+                    isFishEnabled = false;
+                    Change_Visibility_Fish_Controls(false);
+
+                    RenderTimer1.Start();
+                }
             }
 
             else if (Is3DModeEnabled)

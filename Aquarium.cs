@@ -130,6 +130,13 @@ namespace Aquarium
                 {
                     for (int j = 1; j < 600; j++)
                     {
+                        if (local_fish_bool_array[i, j] == 2)
+                        {
+                            RecreateAllArrays();
+
+                            throw new ArgumentException();
+                        }
+
                         var isNeedToDrawFish = IsNeedToDrawFish(i, j, fish_coord);
 
                         var isNeedToDrawSystemFish = 
@@ -142,7 +149,8 @@ namespace Aquarium
                         local_array_with_fish[i, j, 1] = local_fractal_array[i, j, 1];
                         local_array_with_fish[i, j, 2] = local_fractal_array[i, j, 2];
 
-                        if (local_fish_bool_array[i, j] && !isNeedToDrawFish && !isNeedToDrawSystemFish)
+                        if (local_fish_bool_array[i, j] > 0
+                            && !isNeedToDrawFish && !isNeedToDrawSystemFish)
                         {
                             local_fractal_array[i, j, 0] -= 0;
                             local_fractal_array[i, j, 1] -= (byte)rnd.Next(10);
@@ -162,12 +170,14 @@ namespace Aquarium
                             local_array_with_fish[i, j, 1] = local_fractal_array[i, j, 1];
                             local_array_with_fish[i, j, 2] = local_fractal_array[i, j, 2];
 
-                            local_fish_bool_array[i, j] = false;
+                            local_fish_bool_array[i, j] = 0;
                         }
 
                         if (isNeedToDrawFish || isNeedToDrawSystemFish)
                         {
-                            local_fish_bool_array[i, j] = true;
+                            local_fish_bool_array[i, j] = 
+                                isNeedToDrawFish == isNeedToDrawSystemFish
+                                ? (byte)2 : (byte)1;
 
                             local_array_with_fish[i, j, 0] = (byte)(50 + rnd.Next(200));
                             local_array_with_fish[i, j, 1] = (byte)(rnd.Next(150));
@@ -518,13 +528,22 @@ namespace Aquarium
                 && !(i + j >= fish_coord.Item1 + 170 + fish_coord.Item2 - 20);
         }
 
+        private void RecreateAllArrays()
+        {
+            local_array_with_fish = new byte[800, 600, 3];
+            local_fractal_array_before_filter = new byte[800, 600, 3];
+            local_fish_bool_array = new byte[800, 600];
+            fish_matrix = new int[20, 2];
+            user_fish_matrix = new int[18, 2];
+        }
+
         private byte[,,] local_fractal_array = new byte[800, 600, 3];
         private byte[,,] local_fractal_array_before_filter = new byte[800, 600, 3];
 
         private byte[,,] local_array_with_fish = new byte[800, 600, 3];
         private byte[,,] local_array_with_fish_before_filter = new byte[800, 600, 3];
 
-        private bool[,] local_fish_bool_array = new bool[800, 600];
+        private byte[,] local_fish_bool_array = new byte[800, 600];
         private int[,] fish_matrix = new int[20, 2];
         private int[,] user_fish_matrix = new int[18, 2];
 
