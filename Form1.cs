@@ -178,7 +178,8 @@ namespace Aquarium
 
             isFishEnabled = true;
 
-            fish_coord = (rnd.Next(0, 100), rnd.Next(100, 400), 0);
+            fish_coord = (rnd.Next(0, 400), rnd.Next(0, 100), 0);
+            system_fish_coord = (fish_coord.Item1, 600 - fish_coord.Item2, 0);
 
             trackBar1.Value = fish_coord.Item1;
             trackBar2.Value = fish_coord.Item2;
@@ -279,9 +280,20 @@ namespace Aquarium
 
             else if (isFractalEnabled)
             {
+                if (isFishEnabled)
+                {
+                    system_fish_coord.Item2 -= 10;
+
+                    if (system_fish_coord.Item2 <= 0)
+                    {
+                        system_fish_coord.Item2 = 600;
+                    }
+                }
+
                 aquariumDrawer.Draw2DRasterScene(
                     isFishEnabled,
                     fish_coord,
+                    system_fish_coord,
                     isFilteredNow,
                     isFilteredWasDisabled);
             }
@@ -463,6 +475,7 @@ namespace Aquarium
         private bool isFilteredWasDisabled;
         private bool isFishEnabled;
         private (int, int, int) fish_coord;
+        private (int, int, int) system_fish_coord;
 
         // объекты, содержащие настройки для потоков
         ParamsForThread[] threadInputParams = new ParamsForThread[8];

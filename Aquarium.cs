@@ -112,6 +112,7 @@ namespace Aquarium
         public void Draw2DRasterScene(
             bool isFishEnabled,
             (int, int, int) fish_coord,
+            (int, int, int) system_fish_coord,
             bool isFilterEnabled = false,
             bool isFilteredJustDisabled = false)
         {
@@ -129,24 +130,19 @@ namespace Aquarium
                 {
                     for (int j = 1; j < 600; j++)
                     {
-                        var isNeedToDraw =
-                            i >= fish_coord.Item1 && i <= fish_coord.Item1 + 60
-                            && j >= fish_coord.Item2 & j <= fish_coord.Item2 + 80
-                            && !(i >= fish_coord.Item1 + 20 && i <= fish_coord.Item1 + 60
-                                && j >= fish_coord.Item2 & j <= fish_coord.Item2 + 30
-                                && i + j <= fish_coord.Item1 + fish_coord.Item2 + 60)
-                            && !(i >= fish_coord.Item1 && i <= fish_coord.Item1 + 30
-                                && j >= fish_coord.Item2 & j <= fish_coord.Item2 + 30
-                                && i + j <= fish_coord.Item1 - fish_coord.Item2)
-                            || i >= fish_coord.Item1 + 12 && i <= fish_coord.Item1 + 48
-                            && j >= fish_coord.Item2 + 80 && j <= fish_coord.Item2 + 160
-                            && !(i + j >= fish_coord.Item1 + 170 + fish_coord.Item2 - 20);
+                        var isNeedToDrawFish = IsNeedToDrawFish(i, j, fish_coord);
+
+                        var isNeedToDrawSystemFish = 
+                            IsNeedToDrawFish(
+                                i, 
+                                system_fish_coord.Item2 + system_fish_coord.Item2 - j,
+                                system_fish_coord);
 
                         local_array_with_fish[i, j, 0] = local_fractal_array[i, j, 0];
                         local_array_with_fish[i, j, 1] = local_fractal_array[i, j, 1];
                         local_array_with_fish[i, j, 2] = local_fractal_array[i, j, 2];
 
-                        if (local_fish_bool_array[i, j] && !isNeedToDraw)
+                        if (local_fish_bool_array[i, j] && !isNeedToDrawFish && !isNeedToDrawSystemFish)
                         {
                             local_fractal_array[i, j, 0] -= 0;
                             local_fractal_array[i, j, 1] -= (byte)rnd.Next(10);
@@ -169,7 +165,7 @@ namespace Aquarium
                             local_fish_bool_array[i, j] = false;
                         }
 
-                        if (isNeedToDraw)
+                        if (isNeedToDrawFish || isNeedToDrawSystemFish)
                         {
                             local_fish_bool_array[i, j] = true;
 
@@ -504,6 +500,22 @@ namespace Aquarium
             }
 
             return matrixC;
+        }
+
+        private bool IsNeedToDrawFish(int i, int j, (int, int, int) fish_coord)
+        {
+            return 
+                i >= fish_coord.Item1 && i <= fish_coord.Item1 + 60
+                && j >= fish_coord.Item2 & j <= fish_coord.Item2 + 80
+                && !(i >= fish_coord.Item1 + 20 && i <= fish_coord.Item1 + 60
+                    && j >= fish_coord.Item2 & j <= fish_coord.Item2 + 30
+                    && i + j <= fish_coord.Item1 + fish_coord.Item2 + 60)
+                && !(i >= fish_coord.Item1 && i <= fish_coord.Item1 + 30
+                    && j >= fish_coord.Item2 & j <= fish_coord.Item2 + 30
+                    && i + j <= fish_coord.Item1 - fish_coord.Item2)
+                || i >= fish_coord.Item1 + 12 && i <= fish_coord.Item1 + 48
+                && j >= fish_coord.Item2 + 80 && j <= fish_coord.Item2 + 160
+                && !(i + j >= fish_coord.Item1 + 170 + fish_coord.Item2 - 20);
         }
 
         private byte[,,] local_fractal_array = new byte[800, 600, 3];
