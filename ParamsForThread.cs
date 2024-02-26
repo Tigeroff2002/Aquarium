@@ -21,5 +21,10 @@ namespace Aquarium
         public int _FromImageH;
         public int _ToImageH;
         public int _ImageW;
+
+        public void Method()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

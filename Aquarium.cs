@@ -537,6 +537,11 @@ namespace Aquarium
             user_fish_matrix = new int[18, 2];
         }
 
+        public void Method()
+        {
+            throw new System.NotImplementedException();
+        }
+
         private byte[,,] local_fractal_array = new byte[800, 600, 3];
         private byte[,,] local_fractal_array_before_filter = new byte[800, 600, 3];
 

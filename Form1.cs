@@ -135,40 +135,9 @@ namespace Aquarium
 
         private void button3_Click(object sender, EventArgs e)
         {
-            /*
-            Is3DModeEnabled = true;
+            RenderTimer1.Stop();
 
-            // инициализация бибилиотеки glut
-            Glut.glutInit();
-
-            // инициализация режима экрана
-            Glut.glutInitDisplayMode(Glut.GLUT_RGB | Glut.GLUT_DOUBLE | Glut.GLUT_DEPTH);
-
-            // установка цвета очистки экрана (RGBA)
-            Gl.glClearColor(0, 150, 220, 1);
-
-            // установка порта вывода
-            Gl.glViewport(0, 0, AnT.Width, AnT.Height);
-
-            // активация проекционной матрицы
-            Gl.glMatrixMode(Gl.GL_PROJECTION);
-
-            // очистка матрицы
-            Gl.glLoadIdentity();
-
-            // установка перспективы
-            Glu.gluPerspective(155, (float)AnT.Width / (float)AnT.Height, 0.1, 200);
-
-            Gl.glMatrixMode(Gl.GL_MODELVIEW);
-            Gl.glLoadIdentity();
-
-            // начальная настройка параметров openGL (тест глубины, освещение и первый источник света)
-            Gl.glEnable(Gl.GL_DEPTH_TEST);
-            Gl.glEnable(Gl.GL_LIGHTING);
-            Gl.glEnable(Gl.GL_LIGHT0);
-            */
-
-            Form2 form2 = new Form2();
+            form2 = new Form2();
             form2.Show();
         }
 
@@ -512,6 +481,7 @@ namespace Aquarium
         Thread th_8 = null;
 
         private Aquarium aquariumDrawer = null;
+        private TextureLoader textureLoader = null;
 
         private int timerIteration;
 
@@ -523,5 +493,7 @@ namespace Aquarium
         private bool Is3DModeEnabled;
 
         private bool isFractalEnabled;
+
+        private Form2 form2 = null;
     }
 }

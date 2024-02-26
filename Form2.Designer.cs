@@ -76,12 +76,11 @@ namespace Aquarium
             this.Controls.Add(this.AnT);
             this.Name = "Form2";
             this.Text = "3D визуализация";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.Form2_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
-
         #endregion
 
         private Tao.Platform.Windows.SimpleOpenGlControl AnT;

@@ -18,7 +18,7 @@ namespace Aquarium
         // режим специальной визуализации
         bool WireMode = false;
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void Form2_Load(object sender, EventArgs e)
         {
             // инициализация бибилиотеки glut
             Glut.glutInit();
@@ -206,5 +206,10 @@ namespace Aquarium
 
         private double am = 0, bm = 5, cm = -20, dm = -360;
         private double xSpinFirstFish = -20;
+
+        public void Method()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -99,5 +99,10 @@ namespace Aquarium
             }
             return texObject;
         }
+
+        public void Method()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
