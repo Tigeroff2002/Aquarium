@@ -261,36 +261,25 @@ namespace Aquarium
 
             if (isTextureEnabled)
             {
-                // активация проекционной матрицы
                 Gl.glMatrixMode(Gl.GL_PROJECTION);
-
-                // очистка матрицы
                 Gl.glLoadIdentity();
 
-                // установка перспективы
                 Glu.gluPerspective(30, 800 / 600, 1, 100);
 
                 Gl.glMatrixMode(Gl.GL_MODELVIEW);
 
                 Gl.glLoadIdentity();
 
-                // включаем режим текстурирования
                 Gl.glEnable(Gl.GL_TEXTURE_2D);
 
-                // включаем режим текстурирования, указывая идентификатор mGlTextureObject
                 Gl.glBindTexture(Gl.GL_TEXTURE_2D, mGlTextureObject);
 
-                // сохраняем состояние матрицы
                 Gl.glPushMatrix();
 
-                // выполняем перемещение для более наглядного представления сцены
                 Gl.glTranslated(0, -1, -5);
-                // реализуем поворот объекта
 
-                // отрисовываем полигон
                 Gl.glBegin(Gl.GL_QUADS);
 
-                // указываем поочередно вершины и текстурные координаты
                 Gl.glVertex2d(-3, -3);
                 Gl.glTexCoord2f(0, 0);
                 Gl.glVertex2d(3, -3);
@@ -300,24 +289,18 @@ namespace Aquarium
                 Gl.glVertex2d(-3, 3);
                 Gl.glTexCoord2f(0, 1);
 
-                // завершаем отрисовку
                 Gl.glEnd();
 
-                // возвращаем матрицу
                 Gl.glPopMatrix();
 
-                // отключаем режим текстурирования
                 Gl.glDisable(Gl.GL_TEXTURE_2D);
 
-                // активация проекционной матрицы
                 Gl.glMatrixMode(Gl.GL_PROJECTION);
 
-                // очистка матрицы
                 Gl.glLoadIdentity();
 
                 Glu.gluOrtho2D(0.0, 500.0 * 800 / 600, 0.0, 500.0);
 
-                // установка объектно-видовой матрицы
                 Gl.glMatrixMode(Gl.GL_MODELVIEW);
 
                 Gl.glLoadIdentity();
@@ -328,7 +311,6 @@ namespace Aquarium
             Gl.glColor3f(255, 0, 0);
             Gl.glLineWidth(10);
 
-            // Левая часть внешнего контура
             Gl.glBegin(Gl.GL_LINE_STRIP);
 
             for (int k = 0; k < 18; k++)
@@ -349,7 +331,6 @@ namespace Aquarium
 
             Gl.glColor3f(150, 0, 120);
 
-            // Левая часть внешнего контура
             Gl.glBegin(Gl.GL_LINE_STRIP);
 
             for (int k = 0; k < 18; k++)
@@ -370,7 +351,6 @@ namespace Aquarium
 
             Gl.glColor3f(20, 80, 30);
 
-            // Левая часть внешнего контура
             Gl.glBegin(Gl.GL_LINE_STRIP);
 
             for (int k = 0; k < 18; k++)
@@ -395,7 +375,6 @@ namespace Aquarium
 
                 Gl.glLineWidth(10);
 
-                // Левая часть внешнего контура
                 Gl.glBegin(Gl.GL_LINE_STRIP);
 
                 for (int k = 0; k < 18; k++)
@@ -435,18 +414,12 @@ namespace Aquarium
             Gl.glFlush();
         }
 
-        // функция визуализации текста 
         private void PrintText2D(float x, float y, string text)
         {
-            // устанавливаем позицию вывода растровых символов 
-            // в переданных координатах x и y 
             Gl.glRasterPos2f(x, y);
 
-            // в цикле foreach перебираем значения из массива text, 
-            // который содержит значение строки для визуализации 
             foreach (char char_for_draw in text)
             {
-                // визуализируем символ с помощью функции glutBitmapCharacter, используя шрифт GLUT_BITMAP_9_BY_15 
                 Glut.glutBitmapCharacter(Glut.GLUT_BITMAP_9_BY_15, char_for_draw);
             }
         }
@@ -454,7 +427,6 @@ namespace Aquarium
         #region filtering functions
         private void Filter(bool isFishEnabled)
         {
-            // собираем матрицу
             float[] mat = new float[9];
             mat[0] = -0.1f;
             mat[1] = -0.1f;
@@ -494,7 +466,6 @@ namespace Aquarium
 
             filterIteration++;
 
-            // вызываем функцию обработки, передавая туда матрицу и дополнительные параметры
             PixelTransformation(mat, 0, 1, false, local_fractal_array);
 
             if (isFishEnabled)
@@ -510,71 +481,54 @@ namespace Aquarium
             bool need_count_correction,
             byte[,,] arrayForFiltering)
         {
-            // массив для получения результирующего пикселя
             float[] resault_RGB = new float[3];
             int count = 0;
-            // проходим циклом по всем пикселям слоя
+
             for (int Y = 0; Y < 600; Y++)
             {
                 for (int X = 0; X < 600; X++)
                 {
-                    // цикл по всем составляющим (0-2, т.е. R G B)
                     for (int c = 0, ax = 0, bx = 0; c < 3; c++)
                     {
-                        // обнуление составляющей результата
                         resault_RGB[c] = 0;
-                        // обнуление счетчика обработок
                         count = 0;
 
-                        // два цикла для захвата области 3х3 вокруг обрабатываемого пикселя
                         for (bx = -1; bx < 2; bx++)
                         {
                             for (ax = -1; ax < 2; ax++)
                             {
-                                // если мы не попали в рамки, просто используем центральный пиксель, и продолжаем цикл
                                 if (X + ax < 0 || X + ax > 800 - 1 || Y + bx < 0 || Y + bx > 600 - 1)
                                 {
-                                    // считаем составляющую в одной из точек, используем коэфицент в матрице (под номером текущей итерации), коэфицент усиления (COEFF) и прибовляем коррекцию (corr)
                                     resault_RGB[c] += (float)(arrayForFiltering[X, Y, c]) * mat[count] * COEFF + corr;
-                                    // счетчик обработок = ячейке матрицы с необходимым коэфицентом
                                     count++;
-                                    // продолжаем цикл
+
                                     continue;
                                 }
 
-                                // иначе, если мы укладываемся в изображение (не пересекаем границы), используем соседние пиксели, корректируем ячейку массива параметрами ax, bx
                                 resault_RGB[c] += (float)(arrayForFiltering[X + ax, Y + bx, c]) * mat[count] * COEFF + corr;
-                                // счетчик обработок = ячейке матрицы с необходимым коэфицентом
                                 count++;
                             }
                         }
 
                     }
 
-                    // теперь для всех составляющих корректируем цвет
                     for (int c = 0; c < 3; c++)
                     {
-                        // если требуется разделить результат до приведения к 0-255, разделив на количество проведенных операций
                         if (count != 0 && need_count_correction)
                         {
-                            // выполняем данное деление
                             resault_RGB[c] /= count;
                         }
 
-                        // если значение меньше нуля
                         if (resault_RGB[c] < 0)
                         {
-                            // - приравниваем к нулю
                             resault_RGB[c] = 0;
                         }
 
-                        // если больше 255
                         if (resault_RGB[c] > 255)
                         {
-                            // приравниваем к 255
                             resault_RGB[c] = 255;
                         }
-                        // записываем в массив цветов слоя новое значение
+
                         arrayForFiltering[X, Y, c] = (byte)resault_RGB[c];
                     }
                 }
@@ -585,28 +539,22 @@ namespace Aquarium
         #region 3D Fish not used methods
         public void Draw3DFish()
         {
-            // очистка буфера цвета и буфера глубины
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 
             Gl.glClearColor(0, 150, 220, 1);
 
-            // очищение текущей матрицы
             Gl.glLoadIdentity();
 
-            // помещаем состояние матрицы в стек матриц, дальнейшие трансформации затронут только визуализацию объекта
             Gl.glPushMatrix();
 
             Glut.glutWireSphere(2, 16, 16);
 
-            // возвращаем состояние матрицы
             Gl.glPopMatrix();
 
-            // завершаем рисование
             Gl.glFlush();
         }
         #endregion
 
-        // метод для умножения матриц
         private static float[,] MatrixMultiplication(int[,] matrixA, float[,] matrixB)
         {
             var matrixC = new float[18, 2];
