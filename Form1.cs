@@ -2,7 +2,7 @@ using System;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
-
+using Tao.DevIl;
 using Tao.FreeGlut;
 using Tao.OpenGl;
 
@@ -27,7 +27,7 @@ namespace Aquarium
             trackBar1.Maximum = 410;
             trackBar2.Minimum = 0;
             trackBar2.Maximum = 530;
-            trackBar3.Minimum = 0;
+            trackBar3.Minimum = -60;
             trackBar3.Maximum = 60;
 
             Is2DModeEnabled = false;
@@ -174,8 +174,15 @@ namespace Aquarium
         #region init 2D glut matrix
         private void Init2DGlut()
         {
+            // инициализация бибилиотеки glut
+            Glut.glutInit();
+
             // инициализация режима экрана
             Glut.glutInitDisplayMode(Glut.GLUT_RGB | Glut.GLUT_DOUBLE);
+
+            // инициализация библиотеки OpenIL
+            Il.ilInit();
+            Il.ilEnable(Il.IL_ORIGIN_SET);
 
             // установка цвета очистки экрана (RGBA)
             Gl.glClearColor(0, 150, 220, 1);
@@ -189,19 +196,12 @@ namespace Aquarium
             // очистка матрицы
             Gl.glLoadIdentity();
 
-            // определение параметров настройки проекции, в зависимости от размеров сторон элемента AnT.
-            if ((float)AnT.Width <= (float)AnT.Height)
-            {
-                Glu.gluOrtho2D(0.0, 500.0, 0.0, 500.0 * (float)AnT.Height / (float)AnT.Width);
-
-            }
-            else
-            {
-                Glu.gluOrtho2D(0.0, 500.0 * (float)AnT.Width / (float)AnT.Height, 0.0, 500.0);
-            }
+            Glu.gluOrtho2D(0.0, 500.0 * 800 / 600, 0.0, 500.0);
 
             // установка объектно-видовой матрицы
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
+
+            Gl.glLoadIdentity();
         }
         #endregion
 
@@ -232,6 +232,8 @@ namespace Aquarium
             label5.Visible = isFractalEnabled && isFishEnabled;
             trackBar1.Visible = isFractalEnabled && isFishEnabled;
 
+            menuStrip1.Visible = Is2DModeEnabled;
+
             timerIteration++;
 
             DrawAquarium();
@@ -244,7 +246,9 @@ namespace Aquarium
                 aquariumDrawer.Draw2DAquarium(
                     timerIteration,
                     isFishEnabled,
-                    fish_coord);
+                    fish_coord,
+                    mGlTextureObject,
+                    textureIsLoad);
             }
 
             else if (isFractalEnabled)
@@ -454,6 +458,96 @@ namespace Aquarium
             button5.Visible = value;
         }
 
+        #region texture loading
+        private void выбратьТекстуруToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult res = openFileDialog1.ShowDialog(); // если файл выбран и возвращен результат - OK
+
+            if (res == DialogResult.OK)
+            {
+                // создаем изображение с идентификатором imageId
+                Il.ilGenImages(1, out imageId);
+                // делаем изображение текущим
+                Il.ilBindImage(imageId);
+
+                // адрес изображения, полученный с помощью окна выбра файла
+                string url = openFileDialog1.FileName;
+
+                // пробуем загрузить изображение
+                if (Il.ilLoadImage(url))
+                {
+                    // если загрузка прошла успешно
+                    // сохраняем размеры изображения
+                    int width = Il.ilGetInteger(Il.IL_IMAGE_WIDTH);
+                    int height = Il.ilGetInteger(Il.IL_IMAGE_HEIGHT);
+
+                    // определяем число бит на пиксель
+                    int bitspp = Il.ilGetInteger(Il.IL_IMAGE_BITS_PER_PIXEL);
+
+                    switch (bitspp) // в зависимости от полученного результата
+                    {
+
+                        // создаем текстуру, используя режим GL_RGB или GL_RGBA
+                        case 24:
+                            mGlTextureObject = MakeGlTexture(Gl.GL_RGB, Il.ilGetData(), width, height);
+                            break;
+                        case 32:
+                            mGlTextureObject = MakeGlTexture(Gl.GL_RGBA, Il.ilGetData(), width, height);
+                            break;
+
+                    }
+
+                    // активируем флаг, сигнализирующий загрузку текстуры
+                    textureIsLoad = true;
+                    // очищаем память
+                    Il.ilDeleteImages(1, ref imageId);
+
+                }
+            }
+        }
+
+        // создание текстуры в памяти openGL
+        private static uint MakeGlTexture(int Format, IntPtr pixels, int w, int h)
+        {
+            // идентификатор текстурного объекта
+            uint texObject;
+
+            // генерируем текстурный объект
+            Gl.glGenTextures(1, out texObject);
+
+            // устанавливаем режим упаковки пикселей
+            Gl.glPixelStorei(Gl.GL_UNPACK_ALIGNMENT, 1);
+
+            // создаем привязку к только что созданной текстуре
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, texObject);
+
+            // устанавливаем режим фильтрации и повторения текстуры
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_S, Gl.GL_REPEAT);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_T, Gl.GL_REPEAT);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
+            Gl.glTexEnvf(Gl.GL_TEXTURE_ENV, Gl.GL_TEXTURE_ENV_MODE, Gl.GL_REPLACE);
+
+            // создаем RGB или RGBA текстуру
+            switch (Format)
+            {
+
+                case Gl.GL_RGB:
+                    Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGB, w, h, 0, Gl.GL_RGB, Gl.GL_UNSIGNED_BYTE, pixels);
+                    break;
+
+                case Gl.GL_RGBA:
+                    Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA, w, h, 0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, pixels);
+                    break;
+
+            }
+
+            // возвращаем идентификатор текстурного объекта
+
+            return texObject;
+        }
+        #endregion
+
         private bool isFilteredNow;
         private bool isFilteredWasDisabled;
         private bool isFishEnabled;
@@ -468,7 +562,6 @@ namespace Aquarium
 
         // массив пикселей
         static private byte[,,] PixelsArray = new byte[800, 600, 3];
-
 
         // объявляем объекты для управления потоками
         Thread th_1 = null;
@@ -495,5 +588,10 @@ namespace Aquarium
         private bool isFractalEnabled;
 
         private Form2 form2 = null;
+
+        private bool textureIsLoad;
+        private int rot;
+        private uint mGlTextureObject;
+        private int imageId;
     }
 }

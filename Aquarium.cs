@@ -190,6 +190,7 @@ namespace Aquarium
             if (isFilterEnabled)
             {
                 filterDisableIteration = 0;
+
                 Filter(isFishEnabled);
             }
 
@@ -230,6 +231,10 @@ namespace Aquarium
             {
                 // визуализируем массив
                 Gl.glDrawPixels(600, 600, Gl.GL_RGB, Gl.GL_UNSIGNED_BYTE, local_array_with_fish);
+
+                Gl.glColor3f(255, 0, 0);
+
+                PrintText2D(200, 200, "2222222222222");
             }
             else
             {
@@ -244,13 +249,79 @@ namespace Aquarium
         public void Draw2DAquarium(
             int timerIteration,
             bool isFishEnabled,
-            (int, int, int) fish_coord)
+            (int, int, int) fish_coord,
+            uint mGlTextureObject,
+            bool isTextureEnabled = false)
         {
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 
             Gl.glClearColor(0, 150, 220, 1);
 
             Gl.glLoadIdentity();
+
+            if (isTextureEnabled)
+            {
+                // активация проекционной матрицы
+                Gl.glMatrixMode(Gl.GL_PROJECTION);
+
+                // очистка матрицы
+                Gl.glLoadIdentity();
+
+                // установка перспективы
+                Glu.gluPerspective(30, 800 / 600, 1, 100);
+
+                Gl.glMatrixMode(Gl.GL_MODELVIEW);
+
+                Gl.glLoadIdentity();
+
+                // включаем режим текстурирования
+                Gl.glEnable(Gl.GL_TEXTURE_2D);
+
+                // включаем режим текстурирования, указывая идентификатор mGlTextureObject
+                Gl.glBindTexture(Gl.GL_TEXTURE_2D, mGlTextureObject);
+
+                // сохраняем состояние матрицы
+                Gl.glPushMatrix();
+
+                // выполняем перемещение для более наглядного представления сцены
+                Gl.glTranslated(0, -1, -5);
+                // реализуем поворот объекта
+
+                // отрисовываем полигон
+                Gl.glBegin(Gl.GL_QUADS);
+
+                // указываем поочередно вершины и текстурные координаты
+                Gl.glVertex2d(-3, -3);
+                Gl.glTexCoord2f(0, 0);
+                Gl.glVertex2d(3, -3);
+                Gl.glTexCoord2f(1, 0);
+                Gl.glVertex2d(3, 3);
+                Gl.glTexCoord2f(1, 1);
+                Gl.glVertex2d(-3, 3);
+                Gl.glTexCoord2f(0, 1);
+
+                // завершаем отрисовку
+                Gl.glEnd();
+
+                // возвращаем матрицу
+                Gl.glPopMatrix();
+
+                // отключаем режим текстурирования
+                Gl.glDisable(Gl.GL_TEXTURE_2D);
+
+                // активация проекционной матрицы
+                Gl.glMatrixMode(Gl.GL_PROJECTION);
+
+                // очистка матрицы
+                Gl.glLoadIdentity();
+
+                Glu.gluOrtho2D(0.0, 500.0 * 800 / 600, 0.0, 500.0);
+
+                // установка объектно-видовой матрицы
+                Gl.glMatrixMode(Gl.GL_MODELVIEW);
+
+                Gl.glLoadIdentity();
+            }
 
             var hi = timerIteration * 10;
 
@@ -262,12 +333,19 @@ namespace Aquarium
 
             for (int k = 0; k < 18; k++)
             {
+                if (k == 0)
+                {
+                    first_system_fish_coord = (fish_matrix[k, 1] + hi % 540, fish_matrix[k, 0] + 170);
+                }
+
                 Gl.glVertex2d(
                     fish_matrix[k, 1] + hi % 540,
                     fish_matrix[k, 0] + 200);
             }
 
             Gl.glEnd();
+
+            PrintText2D(first_system_fish_coord.Item1, first_system_fish_coord.Item2, "Guppi");
 
             Gl.glColor3f(150, 0, 120);
 
@@ -276,12 +354,19 @@ namespace Aquarium
 
             for (int k = 0; k < 18; k++)
             {
+                if (k == 0)
+                {
+                    second_system_fish_coord = (fish_matrix[k, 1] + hi % 540, fish_matrix[k, 0] + 270);
+                }
+
                 Gl.glVertex2d(
                     fish_matrix[k, 1] + hi % 540,
                     fish_matrix[k, 0] + 300);
             }
 
             Gl.glEnd();
+
+            PrintText2D(second_system_fish_coord.Item1, second_system_fish_coord.Item2, "Petushok");
 
             Gl.glColor3f(20, 80, 30);
 
@@ -290,12 +375,19 @@ namespace Aquarium
 
             for (int k = 0; k < 18; k++)
             {
+                if (k == 0)
+                {
+                    third_system_fish_coord = (fish_matrix[k, 1] + hi % 540, fish_matrix[k, 0] + 370);
+                }
+
                 Gl.glVertex2d(
                     fish_matrix[k, 1] + hi % 540,
                     fish_matrix[k, 0] + 400);
             }
 
             Gl.glEnd();
+
+            PrintText2D(third_system_fish_coord.Item1, third_system_fish_coord.Item2, "Koridoras");
 
             if (isFishEnabled)
             {
@@ -325,15 +417,38 @@ namespace Aquarium
 
                     var newMatrix = MatrixMultiplication(user_fish_matrix, rotateMatrix);
 
+                    if (k == 0)
+                    {
+                        user_system_fish_coord = ((int)newMatrix[k, 1] % 650, (int)newMatrix[k, 0] - 30 % 500);
+                    }
+
                     Gl.glVertex2d(
                         newMatrix[k, 1] % 650,
                         newMatrix[k, 0] % 500);
                 }
 
                 Gl.glEnd();
+
+                PrintText2D(user_system_fish_coord.Item1, user_system_fish_coord.Item2, "Kirill");
             }
 
             Gl.glFlush();
+        }
+
+        // функция визуализации текста 
+        private void PrintText2D(float x, float y, string text)
+        {
+            // устанавливаем позицию вывода растровых символов 
+            // в переданных координатах x и y 
+            Gl.glRasterPos2f(x, y);
+
+            // в цикле foreach перебираем значения из массива text, 
+            // который содержит значение строки для визуализации 
+            foreach (char char_for_draw in text)
+            {
+                // визуализируем символ с помощью функции glutBitmapCharacter, используя шрифт GLUT_BITMAP_9_BY_15 
+                Glut.glutBitmapCharacter(Glut.GLUT_BITMAP_9_BY_15, char_for_draw);
+            }
         }
 
         #region filtering functions
@@ -537,11 +652,6 @@ namespace Aquarium
             user_fish_matrix = new int[18, 2];
         }
 
-        public void Method()
-        {
-            throw new System.NotImplementedException();
-        }
-
         private byte[,,] local_fractal_array = new byte[800, 600, 3];
         private byte[,,] local_fractal_array_before_filter = new byte[800, 600, 3];
 
@@ -551,6 +661,11 @@ namespace Aquarium
         private byte[,] local_fish_bool_array = new byte[800, 600];
         private int[,] fish_matrix = new int[20, 2];
         private int[,] user_fish_matrix = new int[18, 2];
+
+        private (int, int) first_system_fish_coord;
+        private (int, int) second_system_fish_coord;
+        private (int, int) third_system_fish_coord;
+        private (int, int) user_system_fish_coord;
 
         private int filterIteration;
         private int filterDisableIteration;
