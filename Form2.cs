@@ -1,7 +1,8 @@
 using System;
 using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms;
-
+using Tao.DevIl;
 using Tao.FreeGlut;
 using Tao.OpenGl;
 
@@ -38,6 +39,10 @@ namespace Aquarium
             // инициализация режима экрана
             Glut.glutInitDisplayMode(Glut.GLUT_RGB | Glut.GLUT_DOUBLE);
 
+            // инициализация библиотеки OpenIL
+            Il.ilInit();
+            Il.ilEnable(Il.IL_ORIGIN_SET);
+
             // установка цвета очистки экрана (RGBA)
             Gl.glClearColor(0, 160, 220, 1);
 
@@ -61,6 +66,9 @@ namespace Aquarium
             Gl.glEnable(Gl.GL_LIGHT0);
 
             BackgroundImage = Image.FromFile("..\\..\\texture\\aquarium.jpg");
+
+            openFileDialog1.Filter = "ase files (*.ase)|*.ase|All files (*.*)|*.*";
+            openFileDialog1.InitialDirectory = Environment.CurrentDirectory;
 
             // активация таймера, вызывающего функцию для визуализации
             RenderTimer.Start();
@@ -144,6 +152,8 @@ namespace Aquarium
                 Gl.glScalef(2f, 2f, 2f);
                 Gl.glTranslated(0, 0, 5);
 
+                Gl.glTranslated(0, 0, -5);
+
                 // Третья рыба
                 Gl.glScalef(0.6f, 0.6f, 0.6f);
                 Gl.glColor3f(1.0f, 0.0f, 1.0f);
@@ -171,7 +181,6 @@ namespace Aquarium
                 Gl.glTranslated(0, 0, -5);
                 Glut.glutSolidCone(3, 5, 10, 10);
             }
-
             else
             {
                 // Первая рыба
@@ -226,6 +235,13 @@ namespace Aquarium
                 Glut.glutWireCone(3, 5, 10, 10);
             }
 
+            //Gl.glScaled(100, 100, 100);
+
+            if (Model != null)
+            {
+                Model.DrawModel();
+            }
+
             // возвращаем состояние матрицы
             Gl.glPopMatrix();
 
@@ -244,6 +260,17 @@ namespace Aquarium
         private void button2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void выбратьaseФайлToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Model = new anModelLoader();
+                Model.LoadModel(openFileDialog1.FileName);
+                RenderTimer.Start();
+                checkBox2.Checked = true;
+            }
         }
 
         private void Form2_KeyPress(object sender, KeyPressEventArgs e)
@@ -280,5 +307,9 @@ namespace Aquarium
         private double yCoord = 5;
 
         private double globalRotation = 0;
+
+        anModelLoader Model = null;
+
+        double a = 0, b = 0, c = -5, dx = -45, dy = 45, dz = 90, zoom = 0.5; // выбранные оси
     }
 }

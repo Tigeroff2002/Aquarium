@@ -98,7 +98,7 @@ namespace Aquarium
             this.загрузить3DМодельToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1280, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1480, 28);
             this.menuStrip1.TabIndex = 7;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -113,8 +113,9 @@ namespace Aquarium
             // выбратьaseФайлToolStripMenuItem
             // 
             this.выбратьaseФайлToolStripMenuItem.Name = "выбратьaseФайлToolStripMenuItem";
-            this.выбратьaseФайлToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
+            this.выбратьaseФайлToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.выбратьaseФайлToolStripMenuItem.Text = "Выбрать .ase файл";
+            this.выбратьaseФайлToolStripMenuItem.Click += new System.EventHandler(this.выбратьaseФайлToolStripMenuItem_Click);
             // 
             // button2
             // 

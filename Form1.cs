@@ -44,6 +44,8 @@ namespace Aquarium
 
             timerIteration = 0;
 
+            openFileDialog1.InitialDirectory = Environment.CurrentDirectory;
+
             BackgroundImage = Image.FromFile("..\\..\\texture\\background.jpg");
 
             RenderTimer1.Start();
