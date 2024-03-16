@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -49,6 +50,8 @@ namespace Aquarium
             BackgroundImage = Image.FromFile("..\\..\\texture\\background.jpg");
 
             RenderTimer1.Start();
+
+            player = new SoundPlayer("..\\..\\sound\\splash.wav");
         }
 
         #region buttons clicks
@@ -425,6 +428,11 @@ namespace Aquarium
                 }
                 catch (ArgumentException)
                 {
+                    if (!checkBox1.Checked)
+                    {
+                        player.Play();
+                    }
+
                     if (Math.Abs(system_fish_speed + fish_speed) >= 100)
                     {
                         RenderTimer1.Stop();
@@ -689,5 +697,7 @@ namespace Aquarium
         private int rot;
         private uint mGlTextureObject;
         private int imageId;
+
+        private SoundPlayer player;
     }
 }

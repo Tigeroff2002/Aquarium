@@ -56,6 +56,7 @@ namespace Aquarium
             this.выбратьТекстуруToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.label10 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
@@ -105,7 +106,7 @@ namespace Aquarium
             this.comboBox1.Items.AddRange(new object[] {
             "без фильтра",
             "увеличение резкости"});
-            this.comboBox1.Location = new System.Drawing.Point(1088, 41);
+            this.comboBox1.Location = new System.Drawing.Point(1084, 53);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(142, 24);
             this.comboBox1.TabIndex = 3;
@@ -239,7 +240,7 @@ namespace Aquarium
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(927, 41);
+            this.label8.Location = new System.Drawing.Point(923, 53);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(122, 16);
             this.label8.TabIndex = 17;
@@ -275,7 +276,7 @@ namespace Aquarium
             // выбратьТекстуруToolStripMenuItem
             // 
             this.выбратьТекстуруToolStripMenuItem.Name = "выбратьТекстуруToolStripMenuItem";
-            this.выбратьТекстуруToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
+            this.выбратьТекстуруToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.выбратьТекстуруToolStripMenuItem.Text = "Выбрать текстуру";
             this.выбратьТекстуруToolStripMenuItem.Click += new System.EventHandler(this.выбратьТекстуруToolStripMenuItem_Click);
             // 
@@ -292,11 +293,22 @@ namespace Aquarium
             this.label10.TabIndex = 21;
             this.label10.Text = "label10";
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(1088, 9);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(144, 20);
+            this.checkBox1.TabIndex = 22;
+            this.checkBox1.Text = "Выключить звуки";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1280, 720);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
@@ -359,6 +371,7 @@ namespace Aquarium
         private System.Windows.Forms.ToolStripMenuItem выбратьТекстуруToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 
