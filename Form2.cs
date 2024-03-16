@@ -22,6 +22,10 @@ namespace Aquarium
         {
             label1.Visible = true;
 
+            label2.Visible = true;
+
+            label2.Text = "Доступно глобальное вращение сцены - R (увеличение угла), F (уменьшение угла)";
+
             label1.Text = "Доступно управление рыбками - WASD (перемещение группы рыбок)";
 
             KeyPreview = true;
@@ -85,6 +89,10 @@ namespace Aquarium
 
             Gl.glPushMatrix();
 
+            Gl.glRotated(globalRotation, 1, 0, 0);
+            Gl.glRotated(globalRotation, 0, 1, 0);
+            Gl.glRotated(globalRotation, 0, 0, 1);
+
             Gl.glTranslated(xCoord, yCoord, cm);
 
             if (xCoord > 20)
@@ -104,7 +112,9 @@ namespace Aquarium
             }
 
             Gl.glPushMatrix();
+
             Gl.glEnable(Gl.GL_COLOR_MATERIAL);
+
             Gl.glColor3f(1.0f, 1.0f, 0.0f);
 
             if (!WireMode)
@@ -254,11 +264,21 @@ namespace Aquarium
             {
                 xCoord += 1;
             }
+            else if (e.KeyChar == 'r')
+            {
+                globalRotation += 5;
+            }
+            else if (e.KeyChar == 'f')
+            {
+                globalRotation -= 5;
+            }
         }
 
         private double am = 0, cm = -20, dm = -360;
 
         private double xCoord = -15;
         private double yCoord = 5;
+
+        private double globalRotation = 0;
     }
 }
