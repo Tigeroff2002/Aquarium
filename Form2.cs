@@ -20,7 +20,15 @@ namespace Aquarium
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            // инициализация бибилиотеки glut
+            label1.Visible = true;
+
+            label1.Text = "Доступно управление рыбками - WASD (перемещение группы рыбок)";
+
+            KeyPreview = true;
+
+            checkBox2.Checked = false;
+
+            // инициализация библиотеки glut
             Glut.glutInit();
 
             // инициализация режима экрана
@@ -58,6 +66,9 @@ namespace Aquarium
         {
             // вызываем функцию отрисовки сцены
             WireMode = checkBox1.Checked;
+
+            label1.Visible = !checkBox2.Checked;
+
             Draw();
         }
 
@@ -72,15 +83,25 @@ namespace Aquarium
             // очищение текущей матрицы
             Gl.glLoadIdentity();
 
-            // помещаем состояние матрицы в стек матриц, дальнейшие трансформации затронут только визуализацию объекта
             Gl.glPushMatrix();
 
-            Gl.glTranslated(xSpinFirstFish, bm, cm);
+            Gl.glTranslated(xCoord, yCoord, cm);
 
-            if (xSpinFirstFish > 25)
-                xSpinFirstFish = -25;
+            if (xCoord > 20)
+            {
+                xCoord = -15;
+            }
+            else if (xCoord < -15)
+            {
+                xCoord = 20;
+            }
             else
-                xSpinFirstFish += 0.3;
+            {
+                if (checkBox2.Checked)
+                {
+                    xCoord += 0.5;
+                }
+            }
 
             Gl.glPushMatrix();
             Gl.glEnable(Gl.GL_COLOR_MATERIAL);
@@ -92,6 +113,7 @@ namespace Aquarium
                 Gl.glRotated(90, 0, 1, 0);
                 Glut.glutSolidCone(2, 5, 10, 10);
                 Glut.glutSolidSphere(3, 30, 30);
+
                 Gl.glTranslated(0, 0, -5);
                 Glut.glutSolidCone(3, 5, 10, 10);
 
@@ -204,12 +226,39 @@ namespace Aquarium
             AnT.Invalidate();
         }
 
-        private double am = 0, bm = 5, cm = -20, dm = -360;
-        private double xSpinFirstFish = -20;
-
-        public void Method()
+        private void button1_Click(object sender, EventArgs e)
         {
-            throw new System.NotImplementedException();
+
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == 'w')
+            {
+                yCoord += 1;
+            }
+            else if (e.KeyChar == 's')
+            {
+                yCoord -= 1;
+            }
+            else if (e.KeyChar == 'a')
+            {
+                xCoord -= 1;
+            }
+            else if (e.KeyChar == 'd')
+            {
+                xCoord += 1;
+            }
+        }
+
+        private double am = 0, cm = -20, dm = -360;
+
+        private double xCoord = -15;
+        private double yCoord = 5;
     }
 }
