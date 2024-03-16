@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tao.DevIl;
 using Tao.FreeGlut;
@@ -128,7 +129,7 @@ namespace Aquarium
             th_7.Start(threadInputParams[6]);
             th_8.Start(threadInputParams[7]);
 
-            Thread.Sleep(3000);
+            Task.Delay(5000).GetAwaiter().GetResult();
 
             aquariumDrawer = new Aquarium(isFractalEnabled, PixelsArray);
         }
