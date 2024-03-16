@@ -34,15 +34,15 @@ namespace Aquarium
             this.AnT = new Tao.Platform.Windows.SimpleOpenGlControl();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.RenderTimer = new System.Windows.Forms.Timer(this.components);
-            this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.загрузить3DМодельToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.выбратьaseФайлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button2 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -77,16 +77,6 @@ namespace Aquarium
             this.RenderTimer.Interval = 30;
             this.RenderTimer.Tick += new System.EventHandler(this.RenderTimer_Tick);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(873, 262);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(141, 63);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Добавить тело вращения";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -117,16 +107,6 @@ namespace Aquarium
             this.выбратьaseФайлToolStripMenuItem.Text = "Выбрать .ase файл";
             this.выбратьaseФайлToolStripMenuItem.Click += new System.EventHandler(this.выбратьaseФайлToolStripMenuItem_Click);
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(873, 361);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(141, 61);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "Покормить рыбок";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -155,16 +135,36 @@ namespace Aquarium
             this.label2.TabIndex = 11;
             this.label2.Text = "label2";
             // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(876, 253);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(95, 20);
+            this.checkBox3.TabIndex = 12;
+            this.checkBox3.Text = "Добавить тело вращения";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(876, 309);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(95, 20);
+            this.checkBox4.TabIndex = 13;
+            this.checkBox4.Text = "Покормить рыбок";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1480, 720);
+            this.Controls.Add(this.checkBox4);
+            this.Controls.Add(this.checkBox3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.AnT);
             this.Controls.Add(this.menuStrip1);
@@ -189,14 +189,14 @@ namespace Aquarium
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Timer RenderTimer;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem загрузить3DМодельToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem выбратьaseФайлToolStripMenuItem;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox checkBox4;
     }
 }

@@ -79,6 +79,10 @@ namespace Aquarium
             // вызываем функцию отрисовки сцены
             WireMode = checkBox1.Checked;
 
+            isFoodEnabled = checkBox4.Checked;
+
+            RenderTimer.Interval = isFoodEnabled ? 60 : 30;
+
             label1.Visible = !checkBox2.Checked;
 
             Draw();
@@ -235,11 +239,50 @@ namespace Aquarium
                 Glut.glutWireCone(3, 5, 10, 10);
             }
 
-            //Gl.glScaled(100, 100, 100);
-
             if (Model != null)
             {
                 Model.DrawModel();
+            }
+
+            if (isFoodEnabled)
+            {
+                if (Model != null)
+                {
+                    Gl.glTranslated(-5, -8, 5);
+
+                    Gl.glRotated(90, 1, 0, 0);
+
+                    Gl.glRotated(100, 0, 1, 0);
+
+                    Gl.glRotated(-180, 0, 0, 1);
+
+                    //Gl.glScalef(0.1f, 0.1f, 0.1f);
+                }
+
+                Gl.glTranslated(5, 0, 8);
+
+                Gl.glScalef(0.05f, 0.05f, 0.05f);
+
+                Gl.glColor3f(1f, 1f, 0f);
+
+                Gl.glRotated(180, 0, 0, 1);
+
+                for (int j = 0; j < 10; j++)
+                {
+                    Gl.glTranslated(0, 0, 10);
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        Glut.glutSolidSphere(3, 30, 30);
+
+                        var signX = random.Next(0, 2) == 0 ? 1 : -1;
+                        var signY = random.Next(0, 2) == 0 ? 1 : -1;
+
+                        Gl.glTranslated(signX * random.Next(100), signY * random.Next(100), 0);
+                    }
+                }
+
+                Gl.glRotated(-90, 0, 0, 1);
             }
 
             // возвращаем состояние матрицы
@@ -250,16 +293,6 @@ namespace Aquarium
 
             // обновляем элемент AnT
             AnT.Invalidate();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void выбратьaseФайлToolStripMenuItem_Click(object sender, EventArgs e)
@@ -301,6 +334,8 @@ namespace Aquarium
             }
         }
 
+        private Random random = new Random();
+
         private double am = 0, cm = -20, dm = -360;
 
         private double xCoord = -15;
@@ -309,6 +344,8 @@ namespace Aquarium
         private double globalRotation = 0;
 
         anModelLoader Model = null;
+
+        private bool isFoodEnabled;
 
         double a = 0, b = 0, c = -5, dx = -45, dy = 45, dz = 90, zoom = 0.5; // выбранные оси
     }
