@@ -320,18 +320,26 @@ namespace Aquarium
 
             var elements_count = 0;
 
-            var h = 2 * Math.PI / 25;
-
             double x, y, z;
 
+            int y1 = 50, y2 = 65, y3 = 30;
+
+            int x1 = 9, x2 = 12, x3 = 30;
+
+            double w1, w2, w3;
+
             // вычисления всех значений y для x, пренадлежащего промежутку от a=2 до b=8, с шагом в 0.1f 
-            for (var phi = -Math.PI; phi <= Math.PI; phi += h)
+            for (x = -10; x < 40; x += 2)
             {
-                x = (raxial + rx * Math.Cos(phi)) * Math.Cos(phi);
+                // задаем полином Лагранжа для набора приближений x1, x2, x3 -> y1, y2, y3
 
-                y = (raxial + ry * Math.Cos(phi)) * Math.Sin(phi);
+                w1 = ((x - x2) * (x - x3)) / ((x1 - x2) * (x1 - x3));
+                w2 = ((x - x1) * (x - x3)) / ((x2 - x1) * (x2 - x3));
+                w3 = ((x - x1) * (x - x2)) / ((x3 - x1) * (x3 - x2));
 
-                z = rz * Math.Sin(phi);
+                y = w1 * y1 + w2 * y2 + w3 * y3;
+
+                z = elements_count;
 
                 // запись координаты x 
                 GeometricTorArray[elements_count, 0] = x;
@@ -389,8 +397,12 @@ namespace Aquarium
 
         private void DrawRotationBody()
         {
+            Gl.glScalef(0.1f, 0.1f, 0.1f);
+
             // устанавливаем размер точек равный 5
             Gl.glPointSize(5.0f);
+
+            Gl.glColor3f(0f, 1f, 1f);
 
             // отрисовка тора по координатам, рассчитанным по параметрическим уравнениям
 
@@ -528,6 +540,8 @@ namespace Aquarium
 
             // завершаем выбранный режим рисования полигонов
             Gl.glEnd();
+
+            Gl.glScalef(10f, 10f, 10f);
         }
         #endregion
 

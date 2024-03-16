@@ -142,7 +142,7 @@ namespace Aquarium
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(95, 20);
             this.checkBox3.TabIndex = 12;
-            this.checkBox3.Text = "Добавить тело вращения";
+            this.checkBox3.Text = "Добавить тело вращения Лагранжа";
             this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // checkBox4
