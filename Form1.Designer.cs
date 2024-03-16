@@ -55,6 +55,7 @@ namespace Aquarium
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.выбратьТекстуруToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
@@ -274,7 +275,7 @@ namespace Aquarium
             // выбратьТекстуруToolStripMenuItem
             // 
             this.выбратьТекстуруToolStripMenuItem.Name = "выбратьТекстуруToolStripMenuItem";
-            this.выбратьТекстуруToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.выбратьТекстуруToolStripMenuItem.Size = new System.Drawing.Size(213, 26);
             this.выбратьТекстуруToolStripMenuItem.Text = "Выбрать текстуру";
             this.выбратьТекстуруToolStripMenuItem.Click += new System.EventHandler(this.выбратьТекстуруToolStripMenuItem_Click);
             // 
@@ -282,11 +283,21 @@ namespace Aquarium
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(827, 663);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(51, 16);
+            this.label10.TabIndex = 21;
+            this.label10.Text = "label10";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1280, 720);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.button5);
@@ -311,6 +322,7 @@ namespace Aquarium
             this.Name = "Form1";
             this.Text = "Аквариум";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
@@ -346,6 +358,7 @@ namespace Aquarium
         private System.Windows.Forms.ToolStripMenuItem файлToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem выбратьТекстуруToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Label label10;
     }
 }
 

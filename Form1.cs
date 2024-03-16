@@ -19,6 +19,14 @@ namespace Aquarium
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            KeyPreview = true;
+
+            label10.Visible = false;
+
+            label10.Text = "Доступно управление рыбкой: WASD (перемещение), R - изменение угла";
+
+            RenderTimer1.Interval = 50;
+
             comboBox1.Enabled = true;
             comboBox1.SelectedIndex = 0;
 
@@ -57,6 +65,8 @@ namespace Aquarium
 
         private void button2_Click(object sender, EventArgs e)
         {
+            RenderTimer1.Interval = 1000;
+
             BackgroundImage = Image.FromFile("..\\..\\texture\\vodorosli.jpg");
 
             isFractalEnabled = true;
@@ -144,6 +154,10 @@ namespace Aquarium
 
         private void button4_Click(object sender, EventArgs e)
         {
+            label10.Visible = true;
+
+            RenderTimer1.Interval = 50;
+
             Change_Visibility_Fish_Controls(true);
 
             isFishEnabled = true;
@@ -162,9 +176,15 @@ namespace Aquarium
 
         private void button5_Click(object sender, EventArgs e)
         {
+            label10.Visible = false;
+
             Change_Visibility_Fish_Controls(false);
 
             isFishEnabled = false;
+
+            fish_speed = 0;
+
+            system_fish_speed = 10;
 
             label5.Text = string.Empty;
             label6.Text = string.Empty;
@@ -240,6 +260,119 @@ namespace Aquarium
             DrawAquarium();
         }
 
+        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Is2DModeEnabled && isFishEnabled)
+            {
+                if (e.KeyChar == 'w')
+                {
+                    if (fish_coord.Item1 + 10 <= trackBar1.Maximum)
+                    {
+                        fish_coord.Item1 += 10;
+                    }
+                }
+                else if (e.KeyChar == 's')
+                {
+                    if (fish_coord.Item1 - 10 >= trackBar1.Minimum)
+                    {
+                        fish_coord.Item1 -= 10;
+                    }
+                }
+                else if (e.KeyChar == 'a')
+                {
+                    if (fish_coord.Item2 - 10 >= trackBar2.Minimum)
+                    {
+                        fish_coord.Item2 -= 10;
+                    }
+                }
+                else if (e.KeyChar == 'd')
+                {
+                    if (fish_coord.Item2 + 10 <= trackBar2.Maximum)
+                    {
+                        fish_coord.Item2 += 10;
+                    }
+                }
+                else if (e.KeyChar == 'r')
+                {
+                    if (fish_coord.Item3 + 5 >= trackBar3.Maximum)
+                    {
+                        fish_coord.Item3 += 5;
+                    }
+                }
+                else if (e.KeyChar == 'f')
+                {
+                    fish_coord.Item3 -= 5;
+
+                    if (fish_coord.Item3 < 0)
+                    {
+                        fish_coord.Item3 = 0;
+                    }
+                }
+
+                trackBar1.Value = fish_coord.Item1;
+                trackBar2.Value = fish_coord.Item2;
+                trackBar3.Value = fish_coord.Item3;
+
+                label5.Text = fish_coord.Item1.ToString();
+                label6.Text = fish_coord.Item2.ToString();
+                label7.Text = Angle_fish.ToString();
+            }
+
+            if (isFractalEnabled && isFishEnabled)
+            {
+                if (e.KeyChar == 'w')
+                {
+                    if (fish_coord.Item1 + 10 <= trackBar1.Maximum)
+                    {
+                        fish_coord.Item1 += 10;
+                    }
+                    else
+                    {
+                        fish_coord.Item1 = trackBar1.Maximum;
+                    }
+                }
+                else if (e.KeyChar == 's')
+                {
+                    if (fish_coord.Item1 - 10 >= trackBar1.Minimum)
+                    {
+                        fish_coord.Item1 -= 10;
+                    }
+                    else
+                    {
+                        fish_coord.Item1 = trackBar1.Minimum;
+                    }
+                }
+                else if (e.KeyChar == 'a')
+                {
+                    if (fish_coord.Item2 - 10 >= trackBar2.Minimum)
+                    {
+                        fish_coord.Item2 -= 10;
+                    }
+                    else
+                    {
+                        fish_coord.Item2 = trackBar2.Minimum;
+                    }
+                }
+                else if (e.KeyChar == 'd')
+                {
+                    if (fish_coord.Item2 + 10 <= trackBar2.Maximum)
+                    {
+                        fish_coord.Item2 += 10;
+                    }
+                    else
+                    {
+                        fish_coord.Item2 = trackBar2.Maximum;
+                    }
+                }
+
+                trackBar1.Value = fish_coord.Item1;
+                trackBar2.Value = fish_coord.Item2;
+
+                label5.Text = fish_coord.Item1.ToString();
+                label6.Text = fish_coord.Item2.ToString();
+            }
+        }
+
         private void DrawAquarium()
         {
             if (Is2DModeEnabled)
@@ -256,12 +389,27 @@ namespace Aquarium
             {
                 if (isFishEnabled)
                 {
-                    system_fish_coord.Item2 -= 10;
-
-                    if (system_fish_coord.Item2 <= 0)
+                    if (fish_coord.Item2 <= 0 || fish_coord.Item2 >= 530)
                     {
-                        system_fish_coord.Item2 = 600;
+                        var abs_speed = Math.Abs(fish_speed) + 10;
+
+                        fish_speed = fish_speed > 0
+                            ? -abs_speed
+                            : abs_speed;
                     }
+
+                    if (system_fish_coord.Item2 <= 70 || system_fish_coord.Item2 >= 600)
+                    {
+                        var abs_speed = Math.Abs(system_fish_speed) + 10;
+
+                        system_fish_speed = system_fish_speed > 0
+                            ? -abs_speed
+                            : abs_speed;
+                    }
+
+                    system_fish_coord.Item2 -= system_fish_speed;
+
+                    fish_coord.Item2 += fish_speed;
                 }
 
                 try
@@ -275,14 +423,30 @@ namespace Aquarium
                 }
                 catch (ArgumentException)
                 {
-                    RenderTimer1.Stop();
+                    if (Math.Abs(system_fish_speed + fish_speed) >= 100)
+                    {
+                        RenderTimer1.Stop();
 
-                    MessageBox.Show("Произошла коллизия рыбок!");
+                        MessageBox.Show("Произошло столкновение на большой скорости!");
 
-                    isFishEnabled = false;
-                    Change_Visibility_Fish_Controls(false);
+                        isFishEnabled = false;
 
-                    RenderTimer1.Start();
+                        Change_Visibility_Fish_Controls(false);
+
+                        RenderTimer1.Start();
+                    }
+
+                    var abs_fish_speed = Math.Abs(fish_speed) + 10;
+
+                    fish_speed = fish_speed >= 0
+                        ? -abs_fish_speed
+                        : abs_fish_speed;
+
+                    var abs_system_fish_speed = Math.Abs(system_fish_speed) + 10;
+
+                    system_fish_speed = system_fish_speed > 0
+                        ? -abs_system_fish_speed
+                        : abs_system_fish_speed;
                 }
             }
 
@@ -480,6 +644,9 @@ namespace Aquarium
         private bool isFishEnabled;
         private (int, int, int) fish_coord;
         private (int, int, int) system_fish_coord;
+
+        private int system_fish_speed = 10;
+        private int fish_speed = 0;
 
         // объекты, содержащие настройки для потоков
         ParamsForThread[] threadInputParams = new ParamsForThread[8];
