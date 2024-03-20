@@ -43,7 +43,10 @@ namespace Aquarium
             this.label2 = new System.Windows.Forms.Label();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.label3 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // AnT
@@ -103,7 +106,7 @@ namespace Aquarium
             // выбратьaseФайлToolStripMenuItem
             // 
             this.выбратьaseФайлToolStripMenuItem.Name = "выбратьaseФайлToolStripMenuItem";
-            this.выбратьaseФайлToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.выбратьaseФайлToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
             this.выбратьaseФайлToolStripMenuItem.Text = "Выбрать .ase файл";
             this.выбратьaseФайлToolStripMenuItem.Click += new System.EventHandler(this.выбратьaseФайлToolStripMenuItem_Click);
             // 
@@ -140,7 +143,7 @@ namespace Aquarium
             this.checkBox3.AutoSize = true;
             this.checkBox3.Location = new System.Drawing.Point(876, 253);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(95, 20);
+            this.checkBox3.Size = new System.Drawing.Size(260, 20);
             this.checkBox3.TabIndex = 12;
             this.checkBox3.Text = "Добавить тело вращения Лагранжа";
             this.checkBox3.UseVisualStyleBackColor = true;
@@ -150,16 +153,38 @@ namespace Aquarium
             this.checkBox4.AutoSize = true;
             this.checkBox4.Location = new System.Drawing.Point(876, 309);
             this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(95, 20);
+            this.checkBox4.Size = new System.Drawing.Size(144, 20);
             this.checkBox4.TabIndex = 13;
             this.checkBox4.Text = "Покормить рыбок";
             this.checkBox4.UseVisualStyleBackColor = true;
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.Location = new System.Drawing.Point(1066, 401);
+            this.trackBar1.Maximum = 20;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.trackBar1.Size = new System.Drawing.Size(56, 56);
+            this.trackBar1.TabIndex = 14;
+            this.trackBar1.Value = 13;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(892, 412);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(44, 16);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "label3";
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1480, 720);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.checkBox4);
             this.Controls.Add(this.checkBox3);
             this.Controls.Add(this.label2);
@@ -175,6 +200,7 @@ namespace Aquarium
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form2_KeyPress);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -198,5 +224,7 @@ namespace Aquarium
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Label label3;
     }
 }

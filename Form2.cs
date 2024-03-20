@@ -25,9 +25,11 @@ namespace Aquarium
 
             label2.Visible = true;
 
+            label1.Text = "Доступно управление рыбками - WASD (перемещение группы рыбок)";
+
             label2.Text = "Доступно глобальное вращение сцены - R (увеличение угла), F (уменьшение угла)";
 
-            label1.Text = "Доступно управление рыбками - WASD (перемещение группы рыбок)";
+            label3.Text = "Настроить освещение";
 
             KeyPreview = true;
 
@@ -545,6 +547,17 @@ namespace Aquarium
         }
         #endregion
 
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            var inentsiv = -1 + trackBar1.Value / 10f;
+
+            _abmbientIntesive[0] = inentsiv;
+            _abmbientIntesive[1] = inentsiv;
+            _abmbientIntesive[2] = inentsiv;
+
+            Gl.glLightModelfv(Gl.GL_LIGHT_MODEL_AMBIENT, _abmbientIntesive);
+        }
+
         private void Form2_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 'w')
@@ -572,6 +585,8 @@ namespace Aquarium
                 globalRotation -= 5;
             }
         }
+
+        private float[] _abmbientIntesive = { 0, 0, 0, 1 };
 
         private int count_elements;
 
