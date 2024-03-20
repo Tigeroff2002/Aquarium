@@ -96,7 +96,6 @@ namespace Aquarium
             threadInputParams[6] = new ParamsForThread(450, 525, 800);
             threadInputParams[7] = new ParamsForThread(525, 600, 800);
 
-
             threadInputParams[0]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
             threadInputParams[1]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);
             threadInputParams[2]._pointerToDraw = new ParamsForThread._RenderDLG(DrawFractal);

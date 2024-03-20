@@ -83,7 +83,7 @@ namespace Aquarium
 
             isFoodEnabled = checkBox4.Checked;
 
-            RenderTimer.Interval = isFoodEnabled ? 60 : 30;
+            //RenderTimer.Interval = isFoodEnabled ? 60 : 30;
 
             label1.Visible = !checkBox2.Checked;
 
@@ -109,13 +109,13 @@ namespace Aquarium
 
             Gl.glTranslated(xCoord, yCoord, cm);
 
-            if (xCoord > 20)
+            if (xCoord > 12)
             {
                 xCoord = -15;
             }
             else if (xCoord < -15)
             {
-                xCoord = 20;
+                xCoord = 12;
             }
             else
             {
