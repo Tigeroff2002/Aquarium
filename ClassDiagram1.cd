@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Aquarium.Form1">
-    <Position X="4.75" Y="1" Width="2" />
+    <Position X="3.75" Y="1" Width="2" />
     <Members>
       <Method Name="Dispose" Hidden="true" />
       <Method Name="InitializeComponent" Hidden="true" />
@@ -17,38 +17,73 @@
       </Delegate>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>IgKkEAAQECAgABAQQICJAAgCAOL6VwgAAHQcAwAYAAA=</HashCode>
+      <HashCode>NyKkMAAQECogABASQICZQAhCAOL6VygBAHQdAwEZIAA=</HashCode>
       <FileName>Form1.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="aquariumDrawer" />
       <Field Name="threadInputParams" />
+      <Field Name="aquariumDrawer" />
       <Field Name="textureLoader" />
       <Field Name="form2" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Aquarium.Form2">
-    <Position X="7.5" Y="3.25" Width="1.75" />
+    <Position X="6.5" Y="3.25" Width="1.75" />
     <Members>
+      <Field Name="_abmbientIntesive" Hidden="true" />
+      <Field Name="a" Hidden="true" />
+      <Field Name="am" Hidden="true" />
+      <Field Name="Angle" Hidden="true" />
+      <Field Name="AnT" Hidden="true" />
+      <Field Name="b" Hidden="true" />
+      <Field Name="c" Hidden="true" />
+      <Field Name="checkBox1" Hidden="true" />
+      <Field Name="checkBox2" Hidden="true" />
+      <Field Name="checkBox3" Hidden="true" />
+      <Field Name="checkBox4" Hidden="true" />
+      <Field Name="cm" Hidden="true" />
+      <Field Name="components" Hidden="true" />
+      <Field Name="count_elements" Hidden="true" />
+      <Field Name="dm" Hidden="true" />
+      <Field Name="dx" Hidden="true" />
+      <Field Name="dy" Hidden="true" />
+      <Field Name="dz" Hidden="true" />
+      <Field Name="GeometricTorArray" Hidden="true" />
+      <Field Name="globalRotation" Hidden="true" />
       <Method Name="InitializeComponent" Hidden="true" />
+      <Field Name="isFoodEnabled" Hidden="true" />
+      <Field Name="label1" Hidden="true" />
+      <Field Name="label10" Hidden="true" />
+      <Field Name="label11" Hidden="true" />
+      <Field Name="label12" Hidden="true" />
+      <Field Name="label2" Hidden="true" />
+      <Field Name="label3" Hidden="true" />
+      <Field Name="label8" Hidden="true" />
+      <Field Name="label9" Hidden="true" />
+      <Field Name="menuStrip1" Hidden="true" />
+      <Field Name="openFileDialog1" Hidden="true" />
+      <Field Name="RenderTimer" Hidden="true" />
+      <Field Name="trackBar1" Hidden="true" />
+      <Field Name="выбратьaseФайлToolStripMenuItem" Hidden="true" />
+      <Field Name="загрузить3DМодельToolStripMenuItem" Hidden="true" />
     </Members>
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
     <TypeIdentifier>
-      <HashCode>cAAAAIAAACAAQpYAAAChAAACAAAAAAAAAAAAAQEAAAA=</HashCode>
+      <HashCode>cQECEYAAECCAApQgICCJQRACAAAAAECxAUyECwEABAA=</HashCode>
       <FileName>Form2.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="Model" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Aquarium.Aquarium">
-    <Position X="9.5" Y="0.5" Width="2" />
+    <Position X="8.75" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAABGAAAIAAAAAAEAAgQAABAxAAAAAAAQAAAYQKIAA=</HashCode>
+      <HashCode>AAAAhGAAAIAAAAAAEACASAABAxIAAAAAIQCAAYQKIgA=</HashCode>
       <FileName>Aquarium.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Aquarium.ParamsForThread">
-    <Position X="1.5" Y="0.5" Width="1.75" />
+    <Position X="0.5" Y="0.5" Width="1.75" />
     <NestedTypes>
       <Delegate Name="Aquarium.ParamsForThread._RenderDLG" Collapsed="true">
         <TypeIdentifier>
@@ -62,10 +97,34 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Aquarium.TextureLoader">
-    <Position X="1" Y="3.75" Width="2" />
+    <Position X="0.5" Y="3.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAEEAAAAAAAAgEIAAAAAAACAAAAABAQAAAAA=</HashCode>
+      <HashCode>AAAEAAAAAAIAAAAAAAAAAIAAAAAAACAAAAABAAAAAAA=</HashCode>
       <FileName>TextureLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aquarium.LIMB">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAACAIAAAAAAAAQAAAAEAAAQAIACAAAZAAAQAQBI=</HashCode>
+      <FileName>LIMB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Aquarium.anModelLoader">
+    <Position X="11.25" Y="2.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAABAAQIIIAACAQAQIAAAAACAAAAAAAAA=</HashCode>
+      <FileName>anModelLoader.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="limbs" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Aquarium.TexturesForObjects">
+    <Position X="13.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAEIAAAAAAACAAAAABAQAAAAA=</HashCode>
+      <FileName>TexturesForObject.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
