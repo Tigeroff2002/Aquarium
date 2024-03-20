@@ -246,7 +246,7 @@ namespace Aquarium
         }
 
         // рисование 2D аквариума в векторном упрощенном виде
-        public void Draw2DAquarium(
+        public void Draw2DAquariumWithoutSprite(
             int timerIteration,
             bool isFishEnabled,
             (int, int, int) fish_coord,
@@ -259,6 +259,43 @@ namespace Aquarium
 
             Gl.glLoadIdentity();
 
+            Draw2DAquarium(
+                timerIteration,
+                isFishEnabled,
+                fish_coord,
+                mGlTextureObject,
+                isTextureEnabled);
+        }
+
+        public void Draw2DAquariumWithSprite(
+            int timerIteration,
+            bool isFishEnabled,
+            (int, int, int) fish_coord,
+            uint[] spriteTexturesObjects)
+        {
+            Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
+
+            Gl.glClearColor(0, 150, 220, 1);
+
+            Gl.glLoadIdentity();
+
+            var mGlTextureObject = spriteTexturesObjects[timerIteration];
+
+            Draw2DAquarium(
+                timerIteration,
+                isFishEnabled,
+                fish_coord,
+                mGlTextureObject,
+                true);
+        }
+
+        private void Draw2DAquarium(
+            int timerIteration,
+            bool isFishEnabled,
+            (int, int, int) fish_coord,
+            uint mGlTextureObject,
+            bool isTextureEnabled = false)
+        {
             if (isTextureEnabled)
             {
                 Gl.glMatrixMode(Gl.GL_PROJECTION);

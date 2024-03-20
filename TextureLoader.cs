@@ -54,7 +54,8 @@ namespace Aquarium
                 return mGlTextureObject;
             }
 
-            throw new InvalidOperationException("No such picture this choosen file name");
+            throw new InvalidOperationException(
+                $"No such picture this choosen with file name {fileName}");
         }
 
         // создание текстуры в памяти openGL

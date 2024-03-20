@@ -248,7 +248,7 @@ namespace Aquarium
             label9.Text = Is2DModeEnabled
                 ? "Используется режим простой 2D визуализации"
                 : isFractalEnabled
-                    ? "Используется режим визуализации растровой сцены с фильтрами"
+                    ? "Используется режим визуализации растровой сцены с фракталом"
                     : Is3DModeEnabled
                         ? "Используется режим 3D визуализации"
                         : "Визуализация не ведется";
@@ -260,6 +260,16 @@ namespace Aquarium
             menuStrip1.Visible = Is2DModeEnabled;
 
             timerIteration++;
+
+            if (spriteIsLoad)
+            {
+                spriteTimeIteration++;
+
+                if (spriteTimeIteration == 48)
+                {
+                    spriteTimeIteration = 0;
+                }
+            }
 
             DrawAquarium();
         }
@@ -381,12 +391,23 @@ namespace Aquarium
         {
             if (Is2DModeEnabled)
             {
-                aquariumDrawer.Draw2DAquarium(
-                    timerIteration,
-                    isFishEnabled,
-                    fish_coord,
-                    mGlTextureObject,
-                    textureIsLoad);
+                if (!spriteIsLoad)
+                {
+                    aquariumDrawer.Draw2DAquariumWithoutSprite(
+                        timerIteration,
+                        isFishEnabled,
+                        fish_coord,
+                        mGlTextureObject,
+                        textureIsLoad);
+                }
+                else
+                {
+                    aquariumDrawer.Draw2DAquariumWithSprite(
+                        spriteTimeIteration,
+                        isFishEnabled,
+                        fish_coord,
+                        spritesTextures);
+                }
             }
 
             else if (isFractalEnabled)
@@ -645,8 +666,31 @@ namespace Aquarium
                 mGlTextureObject = textureLoader.LoadTexture(openFileDialog1.FileName);
                 textureIsLoad = true;
             }
+
+            RenderTimer1.Interval = 50;
         }
         #endregion
+
+        private void использоватьСтандартныйСпрайтToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var textureLoader = new TextureLoader();
+
+            for (int i = 0; i < spritesTextures.Length; i++)
+            {
+                spritesTextures[i] = 
+                    textureLoader.LoadTexture($"{DEFAULT_SPRITES_PATH}\\{i + 1}.jpg");
+            }
+
+            spriteIsLoad = true;
+
+            RenderTimer1.Interval = 1000 / spritesTextures.Length;
+        }
+
+        private bool spriteIsLoad;
+
+        private const string DEFAULT_SPRITES_PATH = "..\\..\\texture\\sprites";
+
+        private uint[] spritesTextures = new uint[48];
 
         private bool isFilteredNow;
         private bool isFilteredWasDisabled;
@@ -680,6 +724,8 @@ namespace Aquarium
         private TextureLoader textureLoader = null;
 
         private int timerIteration;
+
+        private int spriteTimeIteration;
 
         private Random rnd = new Random();
 

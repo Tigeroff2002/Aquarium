@@ -57,6 +57,7 @@ namespace Aquarium
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.label10 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.использоватьСтандартныйСпрайтToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
@@ -95,7 +96,7 @@ namespace Aquarium
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(142, 61);
             this.button2.TabIndex = 2;
-            this.button2.Text = "Визуализация растровой сцены с фильтрами";
+            this.button2.Text = "Визуализация растровой сцены с фракталом";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -268,7 +269,8 @@ namespace Aquarium
             // файлToolStripMenuItem
             // 
             this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.выбратьТекстуруToolStripMenuItem});
+            this.выбратьТекстуруToolStripMenuItem,
+            this.использоватьСтандартныйСпрайтToolStripMenuItem});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
             this.файлToolStripMenuItem.Size = new System.Drawing.Size(59, 24);
             this.файлToolStripMenuItem.Text = "Файл";
@@ -276,7 +278,7 @@ namespace Aquarium
             // выбратьТекстуруToolStripMenuItem
             // 
             this.выбратьТекстуруToolStripMenuItem.Name = "выбратьТекстуруToolStripMenuItem";
-            this.выбратьТекстуруToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.выбратьТекстуруToolStripMenuItem.Size = new System.Drawing.Size(336, 26);
             this.выбратьТекстуруToolStripMenuItem.Text = "Выбрать текстуру";
             this.выбратьТекстуруToolStripMenuItem.Click += new System.EventHandler(this.выбратьТекстуруToolStripMenuItem_Click);
             // 
@@ -302,6 +304,13 @@ namespace Aquarium
             this.checkBox1.TabIndex = 22;
             this.checkBox1.Text = "Выключить звуки";
             this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // использоватьСтандартныйСпрайтToolStripMenuItem
+            // 
+            this.использоватьСтандартныйСпрайтToolStripMenuItem.Name = "использоватьСтандартныйСпрайтToolStripMenuItem";
+            this.использоватьСтандартныйСпрайтToolStripMenuItem.Size = new System.Drawing.Size(336, 26);
+            this.использоватьСтандартныйСпрайтToolStripMenuItem.Text = "Использовать стандартный спрайт";
+            this.использоватьСтандартныйСпрайтToolStripMenuItem.Click += new System.EventHandler(this.использоватьСтандартныйСпрайтToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -372,6 +381,7 @@ namespace Aquarium
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.ToolStripMenuItem использоватьСтандартныйСпрайтToolStripMenuItem;
     }
 }
 
