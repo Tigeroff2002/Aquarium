@@ -265,7 +265,7 @@ namespace Aquarium
             {
                 spriteTimeIteration++;
 
-                if (spriteTimeIteration == 48)
+                if (spriteTimeIteration == spritesTextures.Length)
                 {
                     spriteTimeIteration = 0;
                 }
@@ -678,7 +678,7 @@ namespace Aquarium
             for (int i = 0; i < spritesTextures.Length; i++)
             {
                 spritesTextures[i] = 
-                    textureLoader.LoadTexture($"{DEFAULT_SPRITES_PATH}\\{i + 1}.jpg");
+                    textureLoader.LoadTexture($"{DEFAULT_SPRITES_PATH}\\{i}.jpg");
             }
 
             spriteIsLoad = true;
@@ -690,7 +690,7 @@ namespace Aquarium
 
         private const string DEFAULT_SPRITES_PATH = "..\\..\\texture\\sprites";
 
-        private uint[] spritesTextures = new uint[48];
+        private uint[] spritesTextures = new uint[24];
 
         private bool isFilteredNow;
         private bool isFilteredWasDisabled;
