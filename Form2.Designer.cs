@@ -47,6 +47,7 @@ namespace Aquarium
             this.label3 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
@@ -70,7 +71,7 @@ namespace Aquarium
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(873, 46);
+            this.checkBox1.Location = new System.Drawing.Point(869, 42);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(165, 20);
             this.checkBox1.TabIndex = 5;
@@ -115,7 +116,7 @@ namespace Aquarium
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(870, 194);
+            this.label1.Location = new System.Drawing.Point(866, 185);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(44, 16);
             this.label1.TabIndex = 9;
@@ -124,7 +125,7 @@ namespace Aquarium
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(873, 136);
+            this.checkBox2.Location = new System.Drawing.Point(869, 227);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(195, 20);
             this.checkBox2.TabIndex = 10;
@@ -134,7 +135,7 @@ namespace Aquarium
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(873, 89);
+            this.label2.Location = new System.Drawing.Point(866, 89);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 16);
             this.label2.TabIndex = 11;
@@ -143,7 +144,7 @@ namespace Aquarium
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(876, 253);
+            this.checkBox3.Location = new System.Drawing.Point(872, 285);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(260, 20);
             this.checkBox3.TabIndex = 12;
@@ -153,7 +154,7 @@ namespace Aquarium
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(876, 309);
+            this.checkBox4.Location = new System.Drawing.Point(872, 341);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(144, 20);
             this.checkBox4.TabIndex = 13;
@@ -163,7 +164,7 @@ namespace Aquarium
             // 
             // trackBar1
             // 
-            this.trackBar1.Location = new System.Drawing.Point(1066, 401);
+            this.trackBar1.Location = new System.Drawing.Point(1062, 433);
             this.trackBar1.Maximum = 20;
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -175,7 +176,7 @@ namespace Aquarium
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(892, 412);
+            this.label3.Location = new System.Drawing.Point(888, 444);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 16);
             this.label3.TabIndex = 15;
@@ -188,7 +189,7 @@ namespace Aquarium
             "Позиция камеры 1",
             "Позиция камеры 2",
             "Позиция камеры 3"});
-            this.comboBox1.Location = new System.Drawing.Point(1052, 484);
+            this.comboBox1.Location = new System.Drawing.Point(1048, 516);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(201, 24);
             this.comboBox1.TabIndex = 16;
@@ -196,17 +197,27 @@ namespace Aquarium
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(892, 492);
+            this.label4.Location = new System.Drawing.Point(888, 524);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(44, 16);
             this.label4.TabIndex = 17;
             this.label4.Text = "label4";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(866, 129);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(44, 16);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "label5";
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1480, 720);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label3);
@@ -254,5 +265,6 @@ namespace Aquarium
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
     }
 }

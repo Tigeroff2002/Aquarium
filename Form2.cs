@@ -25,9 +25,11 @@ namespace Aquarium
 
             label2.Visible = true;
 
-            label1.Text = "Доступно управление рыбками - WASD (перемещение группы рыбок)";
+            label1.Text = "Доступно управление рыбками: WASD (перемещение группы рыбок)";
 
-            label2.Text = "Доступно глобальное вращение сцены - R (увеличение угла), F (уменьшение угла)";
+            label2.Text = "Доступно глобальное вращение сцены: R (увеличение угла), F (уменьшение угла)";
+
+            label5.Text = "Доступно глобальное масштабирование: > (увеличение), < (уменьшение)";
 
             label3.Text = "Настроить освещение";
 
@@ -148,6 +150,8 @@ namespace Aquarium
             Gl.glRotated(globalRotation, 1, 0, 0);
             Gl.glRotated(globalRotation, 0, 1, 0);
             Gl.glRotated(globalRotation, 0, 0, 1);
+
+            Gl.glScaled(globalScaling, globalScaling, globalScaling);
 
             Gl.glTranslated(xCoord, yCoord, cm);
 
@@ -620,6 +624,24 @@ namespace Aquarium
             {
                 globalRotation -= 5;
             }
+            else if (e.KeyChar == '>')
+            {
+                globalScaling *= 1.1;
+
+                if (globalScaling >= 5)
+                {
+                    globalScaling = 5;
+                }
+            }
+            else if (e.KeyChar == '<')
+            {
+                globalScaling /= 1.1;
+
+                if (globalScaling <= 0.2)
+                {
+                    globalScaling = 0.2;
+                }
+            }
         }
 
         private float[] _abmbientIntesive = { 0, 0, 0, 1 };
@@ -633,14 +655,13 @@ namespace Aquarium
         private double[,] GeometricTorArray = new double[64, 3];
         private double[,,] ResaultTorGeometric = new double[64, 64, 3];
 
-        private Random random = new Random();
-
         private double am = 0, cm = -20, dm = -360;
 
         private double xCoord = -15;
         private double yCoord = 5;
 
         private double globalRotation = 0;
+        private double globalScaling = 1;
 
         anModelLoader Model = null;
 
