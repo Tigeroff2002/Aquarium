@@ -54,10 +54,11 @@ namespace Aquarium
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.выбратьТекстуруToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.использоватьСтандартныйСпрайтToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.label10 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.использоватьСтандартныйСпрайтToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button6 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
@@ -120,7 +121,7 @@ namespace Aquarium
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(830, 275);
+            this.button3.Location = new System.Drawing.Point(830, 378);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(142, 71);
             this.button3.TabIndex = 4;
@@ -130,7 +131,7 @@ namespace Aquarium
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(830, 403);
+            this.button4.Location = new System.Drawing.Point(830, 506);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(142, 51);
             this.button4.TabIndex = 5;
@@ -230,7 +231,7 @@ namespace Aquarium
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(830, 402);
+            this.button5.Location = new System.Drawing.Point(830, 505);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(142, 52);
             this.button5.TabIndex = 16;
@@ -282,6 +283,13 @@ namespace Aquarium
             this.выбратьТекстуруToolStripMenuItem.Text = "Выбрать текстуру";
             this.выбратьТекстуруToolStripMenuItem.Click += new System.EventHandler(this.выбратьТекстуруToolStripMenuItem_Click);
             // 
+            // использоватьСтандартныйСпрайтToolStripMenuItem
+            // 
+            this.использоватьСтандартныйСпрайтToolStripMenuItem.Name = "использоватьСтандартныйСпрайтToolStripMenuItem";
+            this.использоватьСтандартныйСпрайтToolStripMenuItem.Size = new System.Drawing.Size(336, 26);
+            this.использоватьСтандартныйСпрайтToolStripMenuItem.Text = "Использовать стандартный спрайт";
+            this.использоватьСтандартныйСпрайтToolStripMenuItem.Click += new System.EventHandler(this.использоватьСтандартныйСпрайтToolStripMenuItem_Click);
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -305,18 +313,22 @@ namespace Aquarium
             this.checkBox1.Text = "Выключить звуки";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // использоватьСтандартныйСпрайтToolStripMenuItem
+            // button6
             // 
-            this.использоватьСтандартныйСпрайтToolStripMenuItem.Name = "использоватьСтандартныйСпрайтToolStripMenuItem";
-            this.использоватьСтандартныйСпрайтToolStripMenuItem.Size = new System.Drawing.Size(336, 26);
-            this.использоватьСтандартныйСпрайтToolStripMenuItem.Text = "Использовать стандартный спрайт";
-            this.использоватьСтандартныйСпрайтToolStripMenuItem.Click += new System.EventHandler(this.использоватьСтандартныйСпрайтToolStripMenuItem_Click);
+            this.button6.Location = new System.Drawing.Point(830, 274);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(142, 54);
+            this.button6.TabIndex = 23;
+            this.button6.Text = "Фрактал ромба";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1280, 720);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
@@ -382,6 +394,7 @@ namespace Aquarium
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.ToolStripMenuItem использоватьСтандартныйСпрайтToolStripMenuItem;
+        private System.Windows.Forms.Button button6;
     }
 }
 

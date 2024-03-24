@@ -148,6 +148,12 @@ namespace Aquarium
             aquariumDrawer = new Aquarium(isFractalEnabled, PixelsArray);
         }
 
+        private void button6_Click(object sender, EventArgs e)
+        {
+            form3 = new Form3();
+            form3.Show();
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
             RenderTimer1.Stop();
@@ -737,11 +743,14 @@ namespace Aquarium
         private bool isFractalEnabled;
 
         private Form2 form2 = null;
+        private Form3 form3 = null;
 
         private bool textureIsLoad;
         private int rot;
         private uint mGlTextureObject;
         private int imageId;
+
+        private Bitmap fractalBitmap;
 
         private SoundPlayer player;
     }
