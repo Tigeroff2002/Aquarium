@@ -31,6 +31,8 @@ namespace Aquarium
 
             label3.Text = "Настроить освещение";
 
+            label4.Text = "Настроить камеру";
+
             KeyPreview = true;
 
             checkBox2.Checked = false;
@@ -74,6 +76,36 @@ namespace Aquarium
 
             CalculateRotationBody();
 
+            camera_date[0, 0] = -3;
+            camera_date[0, 1] = 0;
+            camera_date[0, 2] = -20;
+            camera_date[0, 3] = 0;
+            camera_date[0, 4] = 1;
+            camera_date[0, 5] = 0;
+            camera_date[0, 6] = 0;
+
+            // позиция камеры 2:
+
+            camera_date[1, 0] = -3;
+            camera_date[2, 1] = 2;
+            camera_date[1, 2] = -20;
+            camera_date[1, 3] = 30;
+            camera_date[1, 4] = 1;
+            camera_date[1, 5] = 0;
+            camera_date[1, 6] = 0;
+
+            // позиция камеры 3:
+
+            camera_date[2, 0] = -3;
+            camera_date[2, 1] = 2;
+            camera_date[2, 2] = -20;
+            camera_date[2, 3] = 30;
+            camera_date[2, 4] = 1;
+            camera_date[2, 5] = 1;
+            camera_date[2, 6] = 0;
+
+            comboBox1.SelectedIndex = 1;
+
             // активация таймера, вызывающего функцию для визуализации
             RenderTimer.Start();
         }
@@ -102,6 +134,14 @@ namespace Aquarium
 
             // очищение текущей матрицы
             Gl.glLoadIdentity();
+
+            Gl.glPushMatrix();
+
+            int camera = comboBox1.SelectedIndex;
+
+            // используем параметры для установленной камеры
+            Gl.glTranslated(camera_date[camera, 0], camera_date[camera, 1], camera_date[camera, 2]);
+            Gl.glRotated(camera_date[camera, 3], camera_date[camera, 4], camera_date[camera, 5], camera_date[camera, 6]);
 
             Gl.glPushMatrix();
 
@@ -268,30 +308,7 @@ namespace Aquarium
                     Gl.glRotated(-180, 0, 0, 1);
                 }
 
-                Gl.glTranslated(5, 0, 8);
-
-                Gl.glScalef(0.05f, 0.05f, 0.05f);
-
-                Gl.glColor3f(1f, 1f, 0f);
-
-                Gl.glRotated(180, 0, 0, 1);
-
-                for (int j = 0; j < 10; j++)
-                {
-                    Gl.glTranslated(0, 0, 10);
-
-                    for (int i = 0; i < 10; i++)
-                    {
-                        Glut.glutSolidSphere(3, 30, 30);
-
-                        var signX = random.Next(0, 2) == 0 ? 1 : -1;
-                        var signY = random.Next(0, 2) == 0 ? 1 : -1;
-
-                        Gl.glTranslated(signX * random.Next(100), signY * random.Next(100), 0);
-                    }
-                }
-
-                Gl.glRotated(-90, 0, 0, 1);
+                BOOOOM_1.Calculate(global_time);                
             }
 
             // возвращаем состояние матрицы
@@ -558,6 +575,25 @@ namespace Aquarium
             Gl.glLightModelfv(Gl.GL_LIGHT_MODEL_AMBIENT, _abmbientIntesive);
         }
 
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            isFoodEnabled = checkBox4.Checked;
+
+            if (isFoodEnabled)
+            {
+                BOOOOM_1 = new Explosion(10, 10, 1, 100, 500);
+
+                // устанавливаем новые координаты взрыва
+                BOOOOM_1.SetNewPosition(1, 0, 1);
+
+                // случайную силу
+                BOOOOM_1.SetNewPower(15);
+
+                // и активируем сам взрыв
+                BOOOOM_1.Boooom(global_time);
+            }
+        }
+
         private void Form2_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 'w')
@@ -609,6 +645,13 @@ namespace Aquarium
         anModelLoader Model = null;
 
         private bool isFoodEnabled;
+
+        // отсчет времени
+        float global_time = 0; // массив с параметрами установки камеры
+        private float[,] camera_date = new float[3, 7];
+
+        // экземпляра класса Explosion
+        private Explosion BOOOOM_1 = null;
 
         private float raxial = 2, rx = 1, ry = 0.5f, rz = 0.5f;
 
