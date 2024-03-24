@@ -39,6 +39,8 @@ namespace Aquarium
 
             checkBox2.Checked = false;
 
+            checkBox5.Visible = false;
+
             // инициализация библиотеки glut
             Glut.glutInit();
 
@@ -123,6 +125,8 @@ namespace Aquarium
 
             label1.Visible = !checkBox2.Checked;
 
+            checkBox5.Visible = textureIsLoad;
+
             Draw();
         }
 
@@ -136,8 +140,6 @@ namespace Aquarium
 
             // очищение текущей матрицы
             Gl.glLoadIdentity();
-
-            Gl.glPushMatrix();
 
             int camera = comboBox1.SelectedIndex;
 
@@ -172,6 +174,11 @@ namespace Aquarium
             }
 
             Gl.glPushMatrix();
+
+            if (textureIsLoad && !checkBox5.Checked)
+            {
+                DrawTexture();
+            }
 
             Gl.glEnable(Gl.GL_COLOR_MATERIAL);
 
@@ -303,7 +310,7 @@ namespace Aquarium
             {
                 if (Model != null)
                 {
-                    Gl.glTranslated(-5, -8, 5);
+                    Gl.glTranslated(-1, -8, -15);
 
                     Gl.glRotated(90, 1, 0, 0);
 
@@ -416,6 +423,36 @@ namespace Aquarium
                     }
                 }
             }
+        }
+
+        private void DrawTexture()
+        {
+            Gl.glEnable(Gl.GL_TEXTURE_2D);
+
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, mGlTextureObject);
+
+            Gl.glPushMatrix();
+
+            Gl.glTranslated(0, 0, -5);
+
+            Gl.glScaled(20, 20, 1);
+
+            Gl.glBegin(Gl.GL_QUADS);
+
+            Gl.glVertex3d(-3, -3, 0);
+            Gl.glTexCoord2f(0, 0);
+            Gl.glVertex3d(3, -3, 0);
+            Gl.glTexCoord2f(1f, 0);
+            Gl.glVertex3d(3, 3, 0);
+            Gl.glTexCoord2f(1f, 1);
+            Gl.glVertex3d(-3, 3, 0);
+            Gl.glTexCoord2f(0, 1f);
+
+            Gl.glEnd();
+
+            Gl.glPopMatrix();
+
+            Gl.glDisable(Gl.GL_TEXTURE_2D);
         }
 
         private void DrawRotationBody()
@@ -598,6 +635,20 @@ namespace Aquarium
             }
         }
 
+        private void загрузитьТекстуруToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var textureLoader = new TextureLoader();
+
+            DialogResult res = openFileDialog2.ShowDialog(); // если файл выбран и возвращен результат - OK
+
+            if (res == DialogResult.OK)
+            {
+                mGlTextureObject = textureLoader.LoadTexture(openFileDialog2.FileName);
+                textureIsLoad = true;
+                checkBox5.Checked = false;
+            }
+        }
+
         private void Form2_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 'w')
@@ -644,6 +695,10 @@ namespace Aquarium
             }
         }
 
+        private uint mGlTextureObject;
+
+        bool textureIsLoad;
+
         private float[] _abmbientIntesive = { 0, 0, 0, 1 };
 
         private int count_elements;
@@ -661,7 +716,7 @@ namespace Aquarium
         private double yCoord = 5;
 
         private double globalRotation = 0;
-        private double globalScaling = 1;
+        private double globalScaling = 1.5;
 
         anModelLoader Model = null;
 

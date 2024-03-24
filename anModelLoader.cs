@@ -523,7 +523,7 @@ namespace Aquarium
 
             Gl.glColor3f(1.0f, 0.4f, 0.5f);
 
-            Gl.glTranslated(5, 8, -5);
+            Gl.glTranslated(1, 8, 15);
 
             Gl.glRotated(-90, 1, 0, 0);
 
@@ -531,7 +531,7 @@ namespace Aquarium
 
             Gl.glRotated(180, 0, 0, 1);
 
-            Gl.glScalef(10, 10, 10);
+            Gl.glScalef(15, 15, 10);
 
             Gl.glCallList(thisList);
 

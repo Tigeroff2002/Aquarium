@@ -683,7 +683,7 @@ namespace Aquarium
 
             spriteIsLoad = true;
 
-            RenderTimer1.Interval = 1000 / spritesTextures.Length;
+            //RenderTimer1.Interval = 1000 / spritesTextures.Length;
         }
 
         private bool spriteIsLoad;
